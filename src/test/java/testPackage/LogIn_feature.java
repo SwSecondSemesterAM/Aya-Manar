@@ -8,30 +8,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import MyPackage.Admin;
 import MyPackage.Customer;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class LogIn_feature {
-	public String Name ="Aya";
-	public String N = "lolo";
-	public String P = "123";
-	public String P2 = "5432";
+
 	public  String keyEx = "Aya", valueEx ="123";
-//	public Map.Entry<String, String> entryEx;
+    public Customer c;
 
 	public ArrayList<String> name;
 	public ArrayList<String> password;
-	public int index1=0 ;
-
-	 Map<String, String>map ;
-	 Map<String, String>mapEx = new HashMap<String, String>();
+	public Map<String, String>map ;
+    public Map<String, String> mapEx = new HashMap<String, String>();
  
 	@Given("these customers names and their passwords are contained in the system")
 	public void these_customers_names_and_their_passwords_are_contained_in_the_system( io.cucumber.datatable.DataTable dataTable) {
 		   map = new HashMap<String, String>();
 	       map .putAll(dataTable.asMap()); 
+	    
 	     
 	}
 	
@@ -39,22 +36,9 @@ public class LogIn_feature {
 	@Given("the {string} enter his name and his password correctly")
 	public void the_enter_his_name_and_his_password_correctly(String customer) 
 	{
+		c = new Customer();
 		
-		for(Map.Entry<String, String> entry : map.entrySet())
-		{	
-			String key = entry.getKey();
-		    String value = entry.getValue();
-	
-		    if(key.equalsIgnoreCase(keyEx) && value.equalsIgnoreCase(valueEx))
-			{  
-				index1 = 1; 
-				break;
-			}
-		   
-
-			
-		}
-		
+		c.setName(customer);
 		
 	}
 	
@@ -62,7 +46,24 @@ public class LogIn_feature {
 	
 	public void he_press_log_in() {
 		
+		for(Map.Entry<String, String> entry : map.entrySet())
+		{	
+			String key = entry.getKey();//Aya
+		    String value = entry.getValue();//123
+	
+		    if(key.equalsIgnoreCase(keyEx))
+			{  
+		    if(	value.equalsIgnoreCase(valueEx))
+		    	{
+				c.setCustomerLogedIn();
+				break;
+		    	}
+		    
+			}
+		   
+		}
 		
+	//	System.out.print(map.entrySet());
 	}
 
 	@Then("his profile will open")
@@ -70,7 +71,7 @@ public class LogIn_feature {
 		
 
 		
-		assertTrue(index1 == 1);
+		assertTrue(c.getCustomerloged());
 		//String element1 = (String) map.get("key1");
 
 		
@@ -78,6 +79,9 @@ public class LogIn_feature {
 
 	@Given("the {string} enter his password wrong")
 	public void the_enter_his_password_wrong(String name) {
+		c = new Customer();
+		c.setName(name);
+		
 		
 		for(Map.Entry<String, String> entry : map.entrySet())
 		{	
@@ -86,7 +90,7 @@ public class LogIn_feature {
 	
 		    if(key.equalsIgnoreCase(keyEx) && value.equalsIgnoreCase(valueEx))
 			{  
-				index1 = 0; 
+				c.setCustomerLogedIn(); 
 				break;
 			}
 		   
@@ -100,7 +104,7 @@ public class LogIn_feature {
 	@Then("A message will appear saying that the password was entered incorrectly")
 	public void a_message_will_appear_saying_that_the_password_was_entered_incorrectly() {
 		
-		assertTrue((index1 == 0));
+		assertTrue(c.getCustomerloged());
 
 	}
 

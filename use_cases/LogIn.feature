@@ -9,7 +9,7 @@ Feature: logIn
   
   
   
-#@scenario1
+@scenario1
   Scenario Outline: logIn
   the customer want to logIn to his profile
   
@@ -23,7 +23,7 @@ Feature: logIn
       #| "aya"   |    
 
       
- #@scenario2
+ @scenario2
  
  Scenario Outline: logIn
   the customer want to logIn to his profile

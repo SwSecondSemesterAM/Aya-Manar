@@ -6,13 +6,52 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "use_cases", glue = {"testPackage"}, plugin = {"html:target/cucumber/wikipedia.html"})
-
+@CucumberOptions(features = "use_cases", glue = {"testPackage"}, plugin = {"html:target/cucumber/wikipedia.html"},tags = "@scenario1"
+		  )
 
 
 
 
 
 public class TestingClass {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
