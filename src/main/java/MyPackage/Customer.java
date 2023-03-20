@@ -13,6 +13,9 @@ public class Customer {
 	private double  payed_money;
 	private String password;
 	private boolean CustomerLogedIn = false;
+	private boolean Is_request_the_service = false;
+	private boolean customer_service_done = false;
+	private String items;
 	
 	
 	
@@ -31,6 +34,7 @@ public class Customer {
 		this.phone = phone;
 		payed_money = money;
 		this.password = password;
+		
 		//customerList.add(n);//not sure
 		
 		
@@ -129,6 +133,13 @@ public String get_password( )
 	
 }
 
+public int get_id( )
+
+{
+	return id;
+	
+}
+
 public boolean getCustomerloged( )
 {
 	return CustomerLogedIn;
@@ -160,6 +171,47 @@ public void setCustomerLogedOut() {
 
 
 
+public void set_request_the_service( ) {
+
+	Is_request_the_service = true;
+	
+}
+
+
+
+public void set_not_request_the_service() {
+	
+	Is_request_the_service = false;
+
+	
+}
+
+
+
+public void set_customer_service_done( ) {
+
+	customer_service_done = true;
+	
+}
+
+
+
+public void set_customer_service_Notdone() {
+	
+	customer_service_done = false;
+
+	
+}
+
+public void setitems(String items) {
+	this.items =items;
+	
+}
+public String get_items()
+{
+	return items;
+	
+}
 }
 
 

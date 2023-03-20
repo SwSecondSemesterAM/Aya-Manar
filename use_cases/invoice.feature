@@ -6,9 +6,10 @@ Feature: generate invoice for customer
 
 Scenario Outline: generate invoice for <customer> is valid
 
-Given <customer> has already logged_In 
-When <customer> requests the service
-Then should generate invoice 
+Given <customer> has already logged_In to his profile 
+And he requests the service 
+When the service done 
+Then an invoice should generate for him
 
 Examples:
 |customer|
