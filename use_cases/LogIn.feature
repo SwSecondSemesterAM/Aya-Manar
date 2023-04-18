@@ -10,10 +10,10 @@ Feature: logIn
   
   
 @scenario1
-  Scenario Outline: logIn
+  Scenario Outline: logIn successfully
   the customer want to logIn to his profile
   
-    Given the <customer> enter his name and his password correctly
+    Given  <customer> enter his name and his password correctly
     When  he press logIn
     Then his profile will open 
 
@@ -28,11 +28,26 @@ Feature: logIn
  Scenario Outline: logIn
   the customer want to logIn to his profile
   
-    Given the <customer> enter his password wrong
+    Given  <customer> enter his <password> wrong
     When  he press logIn
-    Then A message will appear saying that the password was entered incorrectly
+    Then A message will appear saying that 'the password or email is incorrect'
 
     Examples: 
-      | customer| 
-      | "bashar" |     
-    #  | "omar"   |  
+      | customer| password|
+      | "bashar" |   "5678"  |
+    #  | "omar"   |  |
+    
+  @scenario3
+  
+  Scenario: empty fields
+  Given  Customer click on login and flag is 'true'
+  When field 'name' empty
+  And field 'password'empty
+  Then an error message will show 'please fill the request fields' 
+  
+  
+   
+    
+    
+    
+    

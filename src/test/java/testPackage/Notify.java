@@ -29,7 +29,7 @@ public void i_want_to_send_an_email_to(String name) {
 public void the_order_is_complete() {
 	
 	 
-	i = w.IsReady(test1);
+	//i = w.IsReady(test1);
 //	System.out.print(test1);
 }
 

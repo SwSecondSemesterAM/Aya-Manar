@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class Customer {
+public  class Customer {
 	
 	private int id;
-	private String name;
+	private static String name;
 	private int phone;
 	private String address;
 	private double  payed_money;
-	private String password;
-	private boolean CustomerLogedIn = false;
+	private static String password;
+	private static boolean CustomerLogedIn = false;
 	private boolean Is_request_the_service = false;
 	private boolean customer_service_done = false;
 	private String items;
@@ -58,16 +58,16 @@ public class Customer {
 	
 	public void delete_customer(String n)
 	{
-/*		for(  String s : customerList  )
+		/*
+	for(  String s : customerList  )
 		{
 			if(s.equalsIgnoreCase(n) )
 			{
 				customerList.remove(customerList .indexOf(n));
 			}
 		}
+			
 		*/
-		
-		
 	}
 	
 	public void update_customer()
@@ -90,8 +90,8 @@ public class Customer {
 		
 		
 }
-public void setPassword(String pass) {
-		this.password = pass;
+public static void setPassword(String pass) {
+		password = pass;
 		
 	}
 public void setAddress(String add) {
@@ -102,8 +102,8 @@ public void setPhone(int p) {
 	
 	this.phone = p;
 }
-public void setName(String name) {
-	this.name =name;
+public static void setName(String name2) {
+	name =name2;
 	
 }
 public void setPayedMoney(double d) {
@@ -121,13 +121,13 @@ public int Counter(int r)
 	return r+1;
 }
 
-public String get_name()
+public static String get_name()
 {
 	return name;
 	
 }
 
-public String get_password( )
+public static String get_password( )
 {
 	return password;
 	
@@ -140,7 +140,7 @@ public int get_id( )
 	
 }
 
-public boolean getCustomerloged( )
+public static boolean getCustomerloged( )
 {
 	return CustomerLogedIn;
 	
@@ -154,7 +154,7 @@ public boolean CustomerLogedIn() {
 
 
 
-public void setCustomerLogedIn( ) {
+public static void setCustomerLogedIn( ) {
 
 	CustomerLogedIn = true;
 	
@@ -212,6 +212,9 @@ public String get_items()
 	return items;
 	
 }
+
+
+
 }
 
 

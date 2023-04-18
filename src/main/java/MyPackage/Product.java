@@ -1,6 +1,8 @@
 package MyPackage;
 
 import java.util.ArrayList;
+//record full information for the product (e.g. name, picture, description[dimension,
+//material) , is required special treatment, etc..)
 
 public class Product {
 	
@@ -9,8 +11,14 @@ public class Product {
 	private String name;
 	private String Picture;
 	private String description;
+	private boolean Isrequiredspecialtreatment = false;
+	public Product()
+	{
+		
+		
+	}
 	
-	public  Product(String name , String Category , String Picture , String description )
+	public Product(String name , String Category , String Picture , String description )
 	{
 		this.name = name;
 		this.Category = Category;
@@ -30,10 +38,11 @@ public class Product {
 		
 	}
 	
-	public void add_product(String n)
+/*	public Product add_product(String n)
 	{
-		//customerList.add(n);
-	}
+		
+		
+	}*/
 	
 	public void delete_product(String n)
 	{
@@ -56,6 +65,33 @@ public class Product {
 	
 	
 	
+	public void setCategory(String Cat) {
+		this.Category = Cat;
+		
+	}
+	public void setname(String n) {
+		this.name = n;
+		
+	}
+	
+	public void setPicture (String pic) {
+		this.Picture = pic;
+		
+	}
+	public void setdescription(String dis) {
+		this.description = dis;
+		
+	}
+	public String getdescription() {
+
+   return description;
+		
+	}
+	public void setIsrequiredspecialtreatment(boolean t) {
+		
+		this.Isrequiredspecialtreatment = t;
+	}
+
 	
 	
 	

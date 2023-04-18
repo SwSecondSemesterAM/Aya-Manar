@@ -3,26 +3,24 @@ package MyPackage;
 import java.util.Map;
 
 public class Admin {
-	private Map<String, String> map;
 
+	private Product p;
 	
-	public int IsReady(int test)
+	
+	
+	public void addnewProduct(String c , String n , String pic , String d , String Is)
 	{
-		System.out.print("hi");
-		return test+1;
-		
+	p = new Product();
+	p.setCategory(c);
+	p.setname(n);
+	p.setPicture(pic);
+	p.setdescription(d);
+	p.setIsrequiredspecialtreatment(false);
+	
 	}
 	
-
-public void setMap(Map<String, String> map) {
-
-	this.map .putAll(map);
 	
-}
-public Map<String, String> getMap()
-{
-	return map;
 	
-}
+
 
 }
