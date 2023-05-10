@@ -6,7 +6,7 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "use_cases", glue = {"testPackage"}, plugin = {"html:target/cucumber/wikipedia.html"},tags = "@discount_tag" )
+@CucumberOptions(features = "use_cases", glue = {"testPackage"}, plugin = {"html:target/cucumber/wikipedia.html"},tags = "@notify" )
 
 
 

@@ -4,19 +4,42 @@ Feature: discount
 
 Background:
 Given these customers and those information
-#name|id|phone|address|password|payedMoney|
-|lana|200|
-|omar|7000|
+#name |totalpayed|frequently|
+|lana |   2000   | 11       |
+|omar |   7000   | 14       |
+|aya  |   1200   | 23       |
+|yara |    360   | 19       |
+|manar|   4000   |  3       |
+| ali |   120    |  1       |
   @discount_tag
-  Scenario: giving discount to  <customer>  
-    Given <customer> uses the service with an amount of money > 400 NIS
-    When  the <customer> frequently use this service with amount more than 400 NIS
-    Then  then he have to get a <10>% discount
 
-    Examples: 
-     | customer | amount | 
-     | "Ahmad" |  10 | 
-     | "Ola" |  25 | 
 
+Scenario Outline: Give the customer discount
+    Given the <customer> has used the service 'frequently'
+    And he has spent more than 400 NIS
+    When he requests a discount
+    Then the discount rate should be 10 %
+   
+   Examples:  
+    |customer  |
+    | "lana"   |
+    | "omar"   |
+    | "aya"    |
      
      
+ @discount_tag2
+ 
+    Scenario Outline: Give the customer discount
+    When the <customer> hasnt used the service so many
+    And the customer hasnt spent more than 400 NIS
+    Then he will not get a discount
+    
+     Examples:  
+    |customer  |
+    | "yara"   |
+    | "manar"  |
+    | "ali"    |
+    
+    
+    
+ 

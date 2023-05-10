@@ -1,11 +1,14 @@
 Feature: logIn 
   Background:
-  Given these customers names and their passwords are contained in the system
+  Given these customers with there information contained in the system
     
- # |customer|password|
-  |Aya|123|
-  |yasmeen|5466|
-  |manar|897|
+ 
+#| name    |  phone       | address   |       email           | id   | password |state|
+ | Aya     |  09376  | A120      |abtammam2020@gmail.com |12345 | 1AsO45   |false|
+ | yasmeen |  0388673923  | B230      |yasmin@gmail.com       |54322 | 12342Aa  |false|
+ | manar   |  8876209378  | C340      |manar2019@gmail.com    |92010 |Ffffff123 |false |
+     
+  
   
   
   
@@ -13,37 +16,40 @@ Feature: logIn
   Scenario Outline: logIn successfully
   the customer want to logIn to his profile
   
-    Given  <customer> enter his name and his password correctly
-    When  he press logIn
+    Given  name field is empty
+    And password field is empty
+    When he fill 'email' with <email>
+    And  he fill 'password' with <Password>
     Then his profile will open 
 
     Examples: 
-      | customer| 
-      | "manar" |     
-      #| "aya"   |    
+      | email                    | Password        | 
+      | "manar2019@gmail.com"    |     "Ffffff123" |
+      | "abtammam2020@gmail.com" |     "1AsO45"    |
 
       
  @scenario2
  
- Scenario Outline: logIn
-  the customer want to logIn to his profile
+ Scenario Outline: logIn error
   
-    Given  <customer> enter his <password> wrong
-    When  he press logIn
-    Then A message will appear saying that 'the password or email is incorrect'
+    Given  name field is empty
+    And password field is empty
+    When he fill 'email' with <email>
+    And  he fill 'password' with <Password>
+    Then a 'message' should appear said that there is something error with your input
 
     Examples: 
-      | customer| password|
-      | "bashar" |   "5678"  |
-    #  | "omar"   |  |
+      | email     | Password | 
+      | "manarr"  |     "897"|
+      | "aya"     |     "1232"|
     
   @scenario3
   
   Scenario: empty fields
-  Given  Customer click on login and flag is 'true'
-  When field 'name' empty
-  And field 'password'empty
-  Then an error message will show 'please fill the request fields' 
+  Given  Customer click on login and flag is 'false'
+  Then field 'name' should be error
+  And  field 'password ' should be error
+ And an error message will show 'please fill the request fields' 
   
   
    

@@ -1,17 +1,34 @@
+Feature: Email Notifications
+  
+  Background:
+  Given these users names, their emails and their IDs are contained in the system
+# |Customer Name    | Email                |  ID      |
+  |Aya              |abtammam2020@gmail.com|   12345  | 
+  |yasmeen          |yasmeen@gmail.com     |   54322  |
+  |manar            |manar@gmail.com       |   92010  |
 
-Feature: Notify
-  
-  
-  //@tag1
-  Scenario Outline: send a notify to the customer
-    Given I want to send an email to <customer>
-    When the order is complete 
-    Then I will send an email to Notify <customer>
-    
-    Examples: 
-      | customer  |
-      | "yasmeen" |     
-      | "lana"    | 
+And these orders names, their IDs are contained in the system
+
+# |product Name      | Customer ID      |  Product ID|  status    |
+  |Cover             |12345             |      1     |  complete  |
+  |Cover             |54322             |      2     |  complete  |
+  |Carpet            |12345             |      3     |  waiting   |
+  |Carpet            |92010             |      4     |in treatment|
 
 
    
+  @notify
+
+Scenario Outline: send a notify to the customer
+  Given a customer with this <email>
+  And   an order with this <ID> is marked as complete
+  Then  the system sends an email notification to the customer
+  And  the user should receive an email with subject "Your order is complete"
+  And   the email body should contain "Dear customer, your order is complete!"
+      
+ Examples: 
+ 
+       |       email                    |    ID     |
+   #    |  "yasmeen@gmail.com"           |    2      |
+        |  "abtammam2020@gmail.com"      |    1      |
+   #    |  "abtammam2020@gmail.com"      |    3      | 

@@ -1,0 +1,5 @@
+orderNum	CusID	category	Color	dimention	payType	quantity	picture	status	IsReq	
+0	222	carpet	red	5.0,50.0	Credit Card	2	pic.jpg	waiting	true
+1	140	cover	silver	30.0,45.0	Cash	3	Aya.jpeg	waiting	false
+2	111	cover	black	40.0,32.0	Credit Card	1	Ss.jpeg	waiting	true
+3	170	cover	blue	34.0,17.0	Credit Card	2	Qza.png	waiting	false

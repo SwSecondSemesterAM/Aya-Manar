@@ -27,6 +27,23 @@ public class LogIn_feature {
     public ArrayList<String> name , phone, address , email , id , password ,state;
 
 
+	//public Map<String, String>map , map2 ;
+ 
+	/*@Given("these customers names and their passwords are contained in the system")
+	public void these_customers_names_and_their_passwords_are_contained_in_the_system( io.cucumber.datatable.DataTable dataTable) {
+		   map = new HashMap<String, String>();
+	       map .putAll(dataTable.asMap()); 
+	    
+	     
+	}
+	
+	@Given("customers state is")
+	public void customers_state_is(io.cucumber.datatable.DataTable dataTable) {
+
+		map2 = new HashMap<String, String>();
+	    map2 .putAll(dataTable.asMap()); 
+		
+	}*/
 	
 	@Given("these customers with there information contained in the system")
 	public void these_customers_with_there_information_contained_in_the_system(io.cucumber.datatable.DataTable dataTable) {
@@ -135,7 +152,7 @@ public void his_profile_will_open() {
 	
 
 	
-	assertTrue(c.getCustomerloged());
+	assertTrue(Customer.getCustomerloged());
 	System.out.print("Welcome!");
 
 
