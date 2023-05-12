@@ -31,7 +31,7 @@ public class LogIn_feature {
 	@Given("these customers with there information contained in the system")
 	public void these_customers_with_there_information_contained_in_the_system(io.cucumber.datatable.DataTable dataTable) {
 		//name , phone, address , email , id , password ,state;
-		c = new Customer();
+		
 		name = new ArrayList<String>();
 		phone = new ArrayList<String>();
 		address = new ArrayList<String>();

@@ -1,6 +1,7 @@
 package MyPackage;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -39,51 +40,6 @@ public class Product {
 
 	
 	
-	public Product()
-	{
-		
-		
-	}
-	
-	public Product(int nom  , String Category , String Picture , String description , boolean ST , int quantity, String status , String color ,String size, String PT , LocalDate  Date )
-	{
-		this.Category = Category;
-		this.Picture = Picture;
-		this.description = description;
-		this.number = nom;
-		this.Isrequiredspecialtreatment = ST;
-		this.quantity = quantity;
-		//this.Price = price;
-		this.status = status;
-		this.color = color;
-		this.payementType = PT;
-		this.Date = Date;
-		this.size = size;
-		
-	}
-	
-	
-	
-	public void create_product( String Category , String Picture , String description )
-	{
-		
-		this.Category = Category;
-		this.Picture = Picture;
-		this.description = description;
-		
-	}
-	
-/*	public Product add_product(String n)
-	{
-		
-		
-	}*/
-	
-	public static void delete_product(String n)
-	{
-		
-		
-	}
 	
 	public static void setCategory(String Cat) {
 		Category = Cat;
@@ -151,7 +107,7 @@ public class Product {
 	
 
 	
-	public  static void create_Product(int nom , String CId  ,String dimention,String material ,  String Color , String category  , String PayType , int quantity ,String pic   )
+	public  static void create_Product(int nom , String CId  ,String dimention,String material ,  String Color , String category  , String PayType , int quantity ,String pic , double price  )
 	{
 		
 		
@@ -191,6 +147,12 @@ public class Product {
 			return;
 		}
 		
+		b = Test.checkPrice(price);
+		if(b == false)
+		{
+			LOGGER.warning("wrong price");
+			return;
+		}
 		
 		
 		
@@ -220,8 +182,8 @@ public class Product {
 		        
 		        // Append new records to the file
 		        FileWriter writer = new FileWriter(FILENAME, true);
-		        if (Product.getCategory() != null && Product.getCID() != null && Product.getDimention() != null && Product.getMaterial() != null && Product.getColor() != null && Product.getPayment() != null && Product.getQuantity() != 0 && Product.getpicture() != null && Product.getStetus() != null) {
-		            writer.write(Product.getNumber() + "\t" + Product.getCID() + "\t" + Product.getCategory() + "\t" + Product.getColor() + "\t" + Product.getDimention() + "\t" + Product.getPayment() + "\t" + Product.getQuantity() + "\t" + Product.getpicture() + "\t" + Product.getStetus() + "\t" + Product.getIRS() + "\n");
+		        if (Product.getCategory() != null && Product.getCID() != null && Product.getDimention() != null && Product.getMaterial() != null && Product.getColor() != null && Product.getPayment() != null && Product.getQuantity() != 0 && Product.getpicture() != null && Product.getStetus() != null && Product.getPrice() !=0) {
+		            writer.write(Product.getNumber() + "\t" + Product.getCID() + "\t" + Product.getCategory() + "\t"+Product.getMaterial()+"\t" + Product.getColor() + "\t" + Product.getDimention() + "\t" + Product.getPayment() + "\t" + Product.getQuantity() + "\t" + Product.getpicture() + "\t" + Product.getStetus() + "\t" + Product.getIRS() + "\t" +Product.getPrice()+"\n");
 		            writer.close();
 		            LOGGER.log(java.util.logging.Level.INFO, "Your order now added, you can track your order and its status from your account.");
 		        } else {
@@ -238,6 +200,10 @@ public class Product {
 	
 	
 	
+	private static double getPrice() {
+		return Price;
+	}
+
 	private static boolean getIRS() {
 		
 		return Isrequiredspecialtreatment;
@@ -354,24 +320,193 @@ public class Product {
 
 	
 	
+	  public static void trackStatus(String customerId) {
+		  boolean b = false;
+	        try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
+	            String header = reader.readLine(); // read and discard the header line
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	                String[] data = line.split("\t"); // split the line into an array of values
+	                if (data[1].equals(customerId)) { // check if the customer ID matches the desired ID
+	                    System.out.println("order with number "+ data[0] + "  category "+data[2]+" Material "+data[3]+" Color "+data[4] + " dimention "+data[5] +" quantity "+data[7] + " picture " + data[8]+" is now in " +data[9] +" status"+"\n");
+	                    b = true;
+	                }
+	            }
+	            if(b ==false)
+	            {
+             LOGGER.warning("You don't have any orders to track");
+
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	
 	
 	
 	
 	
+	  public static void deleteProduct(int idToDelete) {
+
+		    try {
+		        File inputFile = new File(FILENAME);
+		        File tempFile = new File("temp.txt");
+
+		        // Create readers and writers for the input and output files
+		        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+		        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+		        // Read and skip the header line
+		        String headerLine = reader.readLine();
+		        String expectedHeader = "orderNum\tCusID\tcategory\tmaterial\tColor\tdimention\tpayType\tquantity\tpicture\tstatus\tIsReqy\tprice";// modify this to match your actual header
+		        
+		        // Write the header line to the output file
+		        writer.write(headerLine + System.lineSeparator());
+
+		        // Read the remaining lines and write them to the output file
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		        	String[] parts = line.split("\t");
+		        	int id = Integer.parseInt(parts[0]);
+		        	String status = parts[9];
+		        	if (id == idToDelete && status.equals("waiting")) {
+		        	    LOGGER.log(java.util.logging.Level.SEVERE, "product with number " + idToDelete + " and status waiting deleted!");
+		        	} else if (id != idToDelete) {
+		        	    writer.write(line + System.lineSeparator());
+		        	} else {
+		        	    LOGGER.log(java.util.logging.Level.WARNING, "product with number " + idToDelete + " cannot be deleted due to invalid status");
+		        	}
+
+		        }
+
+		        // Close readers and writers
+		        reader.close();
+		        writer.close();
+
+		        // Delete the input file and rename the temporary file to the input file name
+		        if (!inputFile.delete()) {
+		            LOGGER.log(java.util.logging.Level.WARNING, "Could not delete input file: " + inputFile.getName());
+		            return;
+		        }
+		        if (!tempFile.renameTo(inputFile)) {
+		            LOGGER.log(java.util.logging.Level.WARNING, "Could not rename temp file: " + tempFile.getName());
+		        }
+
+		    } catch (IOException e) {
+		        LOGGER.log(java.util.logging.Level.SEVERE, "Error: " + e.getMessage(), e);
+		    }
+		}
 	
 	
 	
 	
+	  public static void updateProduct(int orderNumToUpdate, String CusID, String category,String material, String Color, String dimention, String payType, int quantity, String picture, String status, String IsReq , String Price) {
+
+		    try {
+		        File inputFile = new File(FILENAME);
+		        File tempFile = new File("temp.txt");
+
+		        // Create readers and writers for the input and output files
+		        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+		        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+		        // Read and skip the header line
+		        String headerLine = reader.readLine();
+		        String expectedHeader = "orderNum\tCusID\tcategory\tmaterial\tColor\tdimention\tpayType\tquantity\tpicture\tstatus\tIsReq\tprice";// modify this to match your actual header
+		        
+		        // Write the header line to the output file
+		        writer.write(headerLine + System.lineSeparator());
+
+		        // Read the remaining lines and write them to the output file
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            String[] fields = line.split("\t");
+		            int id = Integer.parseInt(fields[0]);
+		            if (id != orderNumToUpdate) {
+		                writer.write(line + System.lineSeparator());
+		            } else {
+		                // Write the updated line to the output file
+		                String updatedLine = orderNumToUpdate + "\t" + CusID + "\t" + category + "\t" + material+"\t"+ Color + "\t" + dimention + "\t" + payType + "\t" + quantity + "\t" + picture + "\t" + status + "\t" + IsReq +"\t" + Price;
+		                writer.write(updatedLine + System.lineSeparator());
+		                LOGGER.log(java.util.logging.Level.SEVERE, "product with number " + orderNumToUpdate + " updated!");
+		            }
+		        }
+
+		        // Close readers and writers
+		        reader.close();
+		        writer.close();
+
+		        // Delete the input file and rename the temporary file to the input file name
+		        if (!inputFile.delete()) {
+		            LOGGER.log(java.util.logging.Level.WARNING, "Could not delete input file: " + inputFile.getName());
+		            return;
+		        }
+		        if (!tempFile.renameTo(inputFile)) {
+		            LOGGER.log(java.util.logging.Level.WARNING, "Could not rename temp file: " + tempFile.getName());
+		        }
+
+		    } catch (IOException e) {
+		        LOGGER.log(java.util.logging.Level.SEVERE, "Error: " + e.getMessage(), e);
+		    }
+		}
+
 	
+	  public static String getRowByProductNumber(int productNumber) {
+		    String row = null;
+		    try {
+		        File inputFile = new File(FILENAME);
+		        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+
+		        // Read and skip the header line
+		        reader.readLine();
+
+		        // Read the remaining lines and look for the matching product number
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            int id = Integer.parseInt(line.split("\t")[0]);
+		            if (id == productNumber) {
+		                row = line;
+		                break;
+		            }
+		        }
+
+		        // Close reader
+		        reader.close();
+
+		    } catch (IOException e) {
+		        LOGGER.log(java.util.logging.Level.SEVERE, "Error: " + e.getMessage(), e);
+		    }
+
+		    if (row == null) {
+		        LOGGER.warning("No order found with number " + productNumber);
+		        return null;
+		        
+		    }
+
+		    return row;
+		}
+
+
 	
-	
-	
-	
-	
-	
-	
-	
+	  public static double calculatePrice(String category, double height, double width, boolean needsSpecialTreatment) {
+		    double basePrice = 0.0;
+		    if (category.equalsIgnoreCase("carpet")) {
+		        basePrice = 40.0;
+		    } else if (category.equalsIgnoreCase("cover")) {
+		        basePrice = 45.0;
+		    } else {
+		        // Invalid category
+		        return -1.0;
+		    }
+
+		    double size = height * width;
+		    double price = basePrice * size;
+		    if (needsSpecialTreatment) {
+		        price += 20.0;
+		    }
+		    return price;
+		}
+
 	
 	
 	

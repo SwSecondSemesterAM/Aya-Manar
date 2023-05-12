@@ -13,7 +13,7 @@ String name ;
 Customer c ;
 @Given("{string} has signed up to the app")
 public void has_signed_up_to_the_app(String Name) {
-c = new Customer();
+
 name = Name;
 c.setName(Name);
 }

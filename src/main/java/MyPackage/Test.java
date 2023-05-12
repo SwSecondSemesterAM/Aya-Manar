@@ -401,6 +401,17 @@ public class Test {
 	    return true;
 	}
 
+	public static boolean checkPrice(double price) {
+	
+		if(price > 20.0)
+		{
+			return true;
+		}
+			
+		return false;
+		
+	}
+
 	
 
 	

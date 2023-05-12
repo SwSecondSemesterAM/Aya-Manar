@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.lang.System.Logger.Level;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +22,12 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import javax.swing.text.Document;
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 public  class Customer {
 	
@@ -39,17 +48,11 @@ public  class Customer {
 	//private String items;
 	private static int ferquently;
 	private static ArrayList <Product> product = new ArrayList <Product>() ;
+	private static final String FILENAMEInv = "invoice.pdf";
 	private static boolean b;
 	
 	
 	
-	
-	public Customer ()
-	{
-	
-	}
-
-
 	
 	public Customer (String id , String name , String phone , String address ,String City, String email , double Money, double debts , String pass, boolean log , boolean req  , int freq , ArrayList <Product>p  )
 	{
@@ -91,7 +94,7 @@ public  class Customer {
 
 
 
-	public  static void create_customer(String ID , String n , String phone , String add , String city,String email , String Password )
+	public  static void create_customer(String ID , String n , String phone , String add , String city,String email , String Password , int freq)
 	{
 		b = Test.checkID(ID);
 		if(b == false)
@@ -140,11 +143,19 @@ public  class Customer {
 		Customer.setPassword(Password);
 		Customer.setCity(city);
 		Customer.set_id(ID);
+		Customer.setfrequently(0);
 		
         LOGGER.log(java.util.logging.Level.SEVERE, "Welcome to our application!"+Customer.get_name());
 
 	}
 	
+	private static void setfrequently(int i) {
+
+
+		ferquently = i;
+		
+	}
+
 	private static void setCity(String city) {
 
 
@@ -165,10 +176,8 @@ public  class Customer {
 
 	        // Read and skip the header line
 	        String headerLine = reader.readLine();
-	        String expectedHeader = "id\tName\tphone\tAddress\tCity\temail\tPassword"; // modify this to match your actual header
-	        if (!headerLine.equals(expectedHeader)) {
-	            LOGGER.log(java.util.logging.Level.WARNING, "Header does not match expected header");
-	        }
+	        String expectedHeader = "id\tName\tphone\tAddress\tCity\temail\tPassword\tfreq"; // modify this to match your actual header
+
 
 	        // Write the header line to the output file
 	        writer.write(headerLine + System.lineSeparator());
@@ -405,7 +414,7 @@ public static void AddCustomer(String filename) {
     try {
         FileWriter writer = new FileWriter(filename, true);
         if(Customer.get_id() !=null && Customer.get_name() != null && Customer.getPhone() !=null && Customer.getAddetrss() !=null && Customer.getCity()!=null && Customer.get_email()!=null && Customer.get_password()!=null  );
-        writer.write(Customer.get_id()+"\t"+Customer.get_name() +"\t"+Customer.getPhone()+"\t"+Customer.getAddetrss()+"\t" +Customer.getCity()+"\t" +Customer.get_email()+"\t" + Customer.get_password()+"\n");
+        writer.write(Customer.get_id()+"\t"+Customer.get_name() +"\t"+Customer.getPhone()+"\t"+Customer.getAddetrss()+"\t" +Customer.getCity()+"\t" +Customer.get_email()+"\t" + Customer.get_password()+"\t"+Customer.getFreq()+"\n");
         writer.close();
     } catch (IOException e) {
     	
@@ -420,7 +429,7 @@ static String getPhone() {
 
 
           	
-public static void updateCustomer(String id, String name, String address, String city, String password, String email, String phone) {
+public static void updateCustomer(String id, String name, String address, String city, String password, String email, String phone, int freq) {
 	
 	  try (RandomAccessFile raf = new RandomAccessFile(FILENAME, "rw")) {
 	        String line;
@@ -433,7 +442,7 @@ public static void updateCustomer(String id, String name, String address, String
 
 	        while ((line = raf.readLine()) != null) {
 	            String[] parts = line.split("\t");
-	            if (parts.length == 7 && parts[0].trim().equals(id)) { // trim the id value to remove any leading/trailing whitespace
+	            if (parts.length == 8 && parts[0].trim().equals(id)) { // trim the id value to remove any leading/trailing whitespace
 	                found = true;
 	                break;
 	            }
@@ -444,7 +453,7 @@ public static void updateCustomer(String id, String name, String address, String
 	            // update the customer data
 	            raf.seek(pos);
 	            StringBuilder sb = new StringBuilder();
-	            sb.append(id).append("\t").append(name).append("\t").append(phone).append("\t").append(address).append("\t").append(city).append("\t").append(email).append("\t").append(password).append("\n");
+	            sb.append(id).append("\t").append(name).append("\t").append(phone).append("\t").append(address).append("\t").append(city).append("\t").append(email).append("\t").append(password).append("\t").append(freq).append("\n");
 
 	            raf.writeBytes(sb.toString());
 	            LOGGER.info("Customer with ID " + id + " updated successfully.");
@@ -461,10 +470,10 @@ public static void updateCustomer(String id, String name, String address, String
 public static List<Customer> findByName(String fileName, String name) {
     List<Customer> matchingCustomers = new ArrayList<>();
     try (Scanner scanner = new Scanner(new File(fileName))) {
-        // Skip first row
-      /*  if (scanner.hasNextLine()) {
+        
+        if (scanner.hasNextLine()) {
             scanner.nextLine();
-        }*/
+        }
         // Read customers
         while (scanner.hasNextLine()) {
             String[] fields = scanner.nextLine().split("\t");
@@ -491,10 +500,7 @@ public static boolean checkCustomerCredentials(String filename, String email, St
                 continue;
             }
             String[] fields = line.split("\t");
-            if (fields.length < 7) {
-                // skip lines that don't have enough fields
-                continue;
-            }
+            
             String customerEmail = fields[5].trim();
             String customerPassword = fields[6].trim();
             if (customerEmail.equals(email) && customerPassword.equals(password)) {
@@ -517,7 +523,7 @@ public static String findNameByEmail(String email) {
         reader.readLine();
         while ((line = reader.readLine()) != null) {
             String[] data = line.split("\t");
-            if (data.length ==7 && data[5].equals(email)) {
+            if (data.length ==8 && data[5].equals(email)) {
                 name = data[1];
                 break;
             }
@@ -554,5 +560,130 @@ public static String findIdByEmail(String email) {
 }
 
 
+public static String getRowByCustomerEmail(String email) {
+	    String row = null;
+	    try {
+	        File inputFile = new File(FILENAME);
+	        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+
+	        reader.readLine();
+
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            String emailM = line.split("\t")[5];
+	            if (emailM.equals(email)) {
+	                row = line;
+	                break;
+	            }
+	        }
+
+	        // Close reader
+	        reader.close();
+
+	    } catch (IOException e) {
+	        LOGGER.log(java.util.logging.Level.SEVERE, "Error: " + e.getMessage(), e);
+	    }
+
+	    if (row == null) {
+	        LOGGER.warning("No order found with email " + email);
+	        return null;
+	        
+	    }
+
+	    return row;
+	}
+
+public static void generateInvoice(String customerEmail) {
+    try {
+        // Create a new document
+    	LocalDate today = LocalDate.now();
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	String dateStr = today.format(formatter);
+    	String customerInformation = Customer.getRowByCustomerEmail(customerEmail);
+    	String [] Customers = customerInformation.split("\t");
+    	File productFile = new File("Products.txt");
+        BufferedReader productReader = new BufferedReader(new FileReader(productFile));
+        XWPFDocument document = new XWPFDocument();
+    
+        // Add customer information
+        XWPFParagraph customerInfo = document.createParagraph();
+    
+        XWPFRun customerInfoRun = customerInfo.createRun();
+        customerInfoRun.setText("Customer Information");
+        customerInfoRun.addCarriageReturn();
+        customerInfoRun.setText("Name: " + Customers[1]);
+        customerInfoRun.addCarriageReturn();
+        customerInfoRun.setText("Email: " + Customers[5]);
+        customerInfoRun.addCarriageReturn();
+        customerInfoRun.setText("Delivery Address: " + Customers[3]+" - " + Customers[4]);
+        customerInfoRun.addCarriageReturn();
+        customerInfoRun.setText("Delivery Date: " + dateStr);
+        customerInfoRun.addCarriageReturn();
+        customerInfoRun.addCarriageReturn();
+
+        // Add items to be cleaned
+        XWPFParagraph itemsToCleanPara = document.createParagraph();
+        XWPFRun itemsToCleanRun = itemsToCleanPara.createRun();
+        itemsToCleanRun.setText("Items to be Cleaned");
+        itemsToCleanRun.addCarriageReturn();
+
+        String productLine;
+        while ((productLine = productReader.readLine()) != null) {
+            String[] productTokens = productLine.split("\t");
+
+            // Check if the current product ID matches the customer's product ID
+            if (productTokens[1].equals(Customers[0])) {
+            	
+            	 itemsToCleanRun.setText("- Id number" + productTokens[0]);
+                 itemsToCleanRun.addCarriageReturn();
+                 itemsToCleanRun.setText("- Category" + productTokens[2]);
+                 itemsToCleanRun.addCarriageReturn();
+                 itemsToCleanRun.setText("- Color" + productTokens[3]);
+                 itemsToCleanRun.addCarriageReturn();
+                 itemsToCleanRun.setText("- Dimention" + productTokens[4]);
+                 itemsToCleanRun.addCarriageReturn();
+                 itemsToCleanRun.setText("- Quantity" + productTokens[5]);
+                 itemsToCleanRun.addCarriageReturn();
+                 itemsToCleanRun.setText("- Picture" + productTokens[6]);
+                 itemsToCleanRun.addCarriageReturn();
+                 
+                 if(Double.parseDouble(productTokens[7]) >400.0  && Integer.parseInt(Customers[7]) >10)
+                 {
+                	 double discount = 0.1 * Double.parseDouble(productTokens[7]);
+                	 double calc = Double.parseDouble(productTokens[7]) - discount;
+                	 productTokens[7] = Double.toString(calc);
+                	 itemsToCleanRun.setText("You get 10% discount!");
+                     itemsToCleanRun.addCarriageReturn();
+                 }
+                 
+                 itemsToCleanRun.setText("- Price" + productTokens[7]);
+                 itemsToCleanRun.addCarriageReturn();
+                 
+            }
+        }
+        // Close the customers reader
+        productReader.close();
+
+        // Save the document
+        String fileName = "Invoice_" + new Date(0).getTime() + ".docx";
+        FileOutputStream outputStream = new FileOutputStream(fileName);
+        document.write(outputStream);
+        outputStream.close();
+
+        LOGGER.info("Invoice generated successfully.");
+
+    } catch (IOException e) {
+        LOGGER.log(java.util.logging.Level.SEVERE, "Error generating invoice: " + e.getMessage(), e);
+    }
+}
+
+    
 
 }
+
+
+
+
+
+
+
