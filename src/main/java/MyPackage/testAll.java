@@ -204,7 +204,7 @@ public class testAll {
 							 CustomerProductnom++; 
 							
 
-						 Product.create_Product(CustomerProductnom, id,dimention ,material,  color, category, payType, Q, picture ,  Product.calculatePrice(category, height, width, RST) );
+						 Product.create_Product(CustomerProductnom, id,dimention ,material,  color, category, payType, Q, picture ,  Product.calculatePrice(category, height, width, RST, Q) , 0 );
 						 System.out.println("Are you sure you want this order");
 						 System.out.println("press 1 for Yes");
 						 System.out.println("press 2 for No");
@@ -225,6 +225,8 @@ public class testAll {
 					 
 				    id = Customer.findIdByEmail(User);		    
 					 Product.trackStatus(id);
+					 
+					
 					 
 					 
 				 }
@@ -386,7 +388,7 @@ public class testAll {
 					 
 // (int orderNumToUpdate, String CusID, String category, String Color, String dimention, String payType, int quantity, String picture, String status, String IsReq) 
 
-					 Product.updateProduct(CustomerProductnom, rowFile[1] , category,material, color, dimention, payType, Q, picture, rowFile[9], rowFile[10] ,  Double.toString(Product.calculatePrice(category, height, width, RST)));
+					 Product.updateProduct(CustomerProductnom, rowFile[1] , category,material, color, dimention, payType, Q, picture, rowFile[9], rowFile[10] ,  Double.toString(Product.calculatePrice(category, height, width, RST,Q)),0);
 					 
 				 }
 				 
@@ -404,7 +406,7 @@ public class testAll {
 		
 	}
 	
-		else if (press == 2)//Admin
+		else if (press == 1)//Admin
 		{
 			
 			 System.out.println("Enter UserName");
@@ -420,8 +422,36 @@ public class testAll {
 				 System.out.println("Press 1 to generate customized reports about business.");
 				 System.out.println("Press 2 to Generate statistics");
 				 System.out.println("press 3 to Distribute the orders");
+				 System.out.println("press 4 to  send invoice to customer when its complete");
 
 				 
+				press = scanner2.nextInt();
+				if(press == 4)//invoice
+				{
+					System.out.println("Customer email to send invoice:  ");
+				     email = scanner.nextLine();
+					Customer.generateInvoice(email);
+					
+				}
+				
+				
+				else if(press == 1)//report
+				{
+					Admin.generateReport();
+					
+				}
+				
+				else if(press == 2)//statistics
+				{
+					Customer.getStatistics();
+				}
+
+
+				else if (press == 3)//distribute
+				{
+					Admin.distributeOrdersToWorkers();
+					
+				}
 				 
 
 		     }
