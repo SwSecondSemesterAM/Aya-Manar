@@ -24,9 +24,9 @@ Scenario Outline: full correct Information.
    
      Examples: 
       |Category    | name      | Picture  |     description        | Isrequiredspecialtreatment   |
-      | "C"        |  "carpet" | "p1"     | "red"                  |"false"                       |
-      | "G"        |  "carpet" |  "p2"    |  "green"               |"false"                       |
-      | "G"        |  "cover"  |  "p2"    |  "green"               |"false"                       |
+      | "C"        |  "carpet" | "p.png"     | "red"                  |"false"                       |
+      | "G"        |  "carpet" |  "p2.jpeg"    |  "green"               |"false"                       |
+      | "G"        |  "cover"  |  "p2.png"    |  "green"               |"false"                       |
   @p3
   Scenario Outline: full Information with error  
    When Customer click on insert button to SignUp to this application and flag is 'false'

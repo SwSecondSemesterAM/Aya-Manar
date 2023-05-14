@@ -338,7 +338,11 @@ public class Product {
 	public static void trackStatus(String customerId) {
 	    boolean b = false;
 	    Scanner s = new Scanner(System.in);
+<<<<<<< HEAD
 	    try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCT_FILENAME))) {
+=======
+	    try (BufferedReader reader = new BufferedReader(new FileReader("Products.txt"))) {
+>>>>>>> a21e64f4bc7b4b3e1512831b23216c932dda7384
 	        StringBuilder sb = new StringBuilder();
 	        String header = reader.readLine(); // read and discard the header line
 	        sb.append(header).append("\n");

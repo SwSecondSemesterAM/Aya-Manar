@@ -1,17 +1,10 @@
-Feature: Distribute orders on available workers
 
-Scenario Outline: Distribute orders to workers
+Feature: Order distribution
 
-  Given there are <NomOfOrder> orders to be completed
-  And there are <numWorkers> workers available to complete the orders
-  When the orders are distributed among the available workers
-  Then each worker has  one order assigned to them
-  
-  
- 
-Examples:
-
-|NomOfOrder|numWorkers|
-|  7       |   7      |
-|  20      |   13     |
-|  8       |   20     |
+  Scenario: Distribute orders to available workers
+    Given a worker named "Alice" is available
+    And a worker named "Bob" is available
+    And an order with ID "1234" and customer name "John" is received
+    When the order is added to the distribution queue
+    Then the order should be assigned to worker "Alice"
+    And worker "Bob" should still be available

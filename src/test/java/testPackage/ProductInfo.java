@@ -10,7 +10,6 @@ import io.cucumber.java.en.When;
 public class ProductInfo {
 	
 	
-	Product p;
 	boolean flag;
 	String s;
 
@@ -18,7 +17,6 @@ public class ProductInfo {
 	@When("click on insert button to insert information about product  and flag is {string}")
 	public void click_on_insert_button_to_insert_information_about_product_and_flag_is(String string) {
 		flag = Boolean.parseBoolean(string);
-		p=new Product();
 	  
 	}
 
@@ -36,6 +34,7 @@ public class ProductInfo {
 
 	@When("he fills {string} with {string}")
 	public void he_fills_with(String string, String string2) {
+<<<<<<< HEAD
 	    s = string;
 	    switch (string.toLowerCase()) {
 	        case "category":
@@ -81,6 +80,76 @@ public class ProductInfo {
 	    }
 	}
 
+=======
+		if(string.equalsIgnoreCase("Category"))
+		{
+			s = string;
+			flag =  Test.checkName(string2);
+			if (flag == true)
+			{
+				Product.setCategory(string2);
+			}
+			else
+			{
+				assertEquals(false, flag);
+				System.out.println(s+ " is worng! "+"Try again.");
+			}
+		}
+		else if(string.equalsIgnoreCase("name"))
+		{
+			s = string;
+			flag =  Test.checkName(string2);
+			if (flag == true)
+			{	Product.setCategory(string2);
+			
+			}
+			else
+			{
+				assertEquals(false, flag);
+				System.out.println(s+ " is worng! "+"Try again.");
+			}
+		}
+		
+		else if(string.equalsIgnoreCase("Picture"))
+		{
+			s = string;
+			flag =  Test.checkPicture(string2);
+			if (flag == true)
+				
+			{	Product.setPicture(string2);
+			}
+			else
+			{
+				assertEquals(false, flag);
+				System.out.println(s+ " is worng! "+"Try again.");
+			}
+
+		}
+		else if(string.equalsIgnoreCase("description"))
+		{
+			s = string;
+			//flag =  Test.checkdescription(string2);
+			if (flag == true)
+				Product.setdescription(string2);
+			else
+			{
+				assertEquals(false, flag);
+				System.out.println(s+ " is worng! "+"Try again.");
+			}
+		}
+		else if(string.equalsIgnoreCase(" Isrequiredspecialtreatment"))
+		{
+			s = string;
+			flag =  Test.checkIsrequiredspecialtreatment(flag);
+			if (flag == true)
+				Product.setIsrequiredspecialtreatment(flag);
+			else
+			{
+				assertEquals(false, flag);
+				System.out.println(s+ " is worng! "+"Try again.");
+			}
+		}
+>>>>>>> a21e64f4bc7b4b3e1512831b23216c932dda7384
 		
 		
 
