@@ -36,78 +36,55 @@ public class ProductInfo {
 
 	@When("he fills {string} with {string}")
 	public void he_fills_with(String string, String string2) {
-		if(string.equalsIgnoreCase("Category"))
-		{
-			s = string;
-			flag =  Test.checkName(string2);
-			if (flag == true)
-			{
-				p.setCategory(string2);
-			}
-			else
-			{
-				assertEquals(false, flag);
-				System.out.println(s+ " is worng! "+"Try again.");
-			}
-		}
-		else if(string.equalsIgnoreCase("name"))
-		{
-			s = string;
-			flag =  Test.checkName(string2);
-			if (flag == true)
-			{	p.setCategory(string2);
-			
-			}
-			else
-			{
-				assertEquals(false, flag);
-				System.out.println(s+ " is worng! "+"Try again.");
-			}
-		}
-		
-		else if(string.equalsIgnoreCase("Picture"))
-		{
-			s = string;
-			flag =  Test.checkPicture(string2);
-			if (flag == true)
-				
-			{	p.setPicture(string2);
-			}
-			else
-			{
-				assertEquals(false, flag);
-				System.out.println(s+ " is worng! "+"Try again.");
-			}
+	    s = string;
+	    switch (string.toLowerCase()) {
+	        case "category":
+	        case "name":
+	            flag = Test.checkName(string2);
+	            if (flag) {
+	                p.setCategory(string2);
+	            } else {
+	                assertEquals(false, flag);
+	                System.out.println(s + " is wrong! " + "Try again.");
+	            }
+	            break;
+	        case "picture":
+	            flag = Test.checkPicture(string2);
+	            if (flag) {
+	                p.setPicture(string2);
+	            } else {
+	                assertEquals(false, flag);
+	                System.out.println(s + " is wrong! " + "Try again.");
+	            }
+	            break;
+	        case "description":
+	            // flag = Test.checkdescription(string2);
+	            if (flag) {
+	                p.setdescription(string2);
+	            } else {
+	                assertEquals(false, flag);
+	                System.out.println(s + " is wrong! " + "Try again.");
+	            }
+	            break;
+	        case "isrequiredspecialtreatment":
+	            flag = Test.checkIsrequiredspecialtreatment(flag);
+	            if (flag) {
+	                p.setIsrequiredspecialtreatment(flag);
+	            } else {
+	                assertEquals(false, flag);
+	                System.out.println(s + " is wrong! " + "Try again.");
+	            }
+	            break;
+	        default:
+	            System.out.println("Unknown string: " + string);
+	            break;
+	    }
+	}
 
-		}
-		else if(string.equalsIgnoreCase("description"))
-		{
-			s = string;
-			//flag =  Test.checkdescription(string2);
-			if (flag == true)
-			p.setdescription(string2);
-			else
-			{
-				assertEquals(false, flag);
-				System.out.println(s+ " is worng! "+"Try again.");
-			}
-		}
-		else if(string.equalsIgnoreCase(" Isrequiredspecialtreatment"))
-		{
-			s = string;
-			flag =  Test.checkIsrequiredspecialtreatment(flag);
-			if (flag == true)
-			p.setIsrequiredspecialtreatment(flag);
-			else
-			{
-				assertEquals(false, flag);
-				System.out.println(s+ " is worng! "+"Try again.");
-			}
-		}
 		
 		
 
-		}
+		
 		
 		
 

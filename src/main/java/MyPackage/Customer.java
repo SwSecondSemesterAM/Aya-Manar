@@ -33,6 +33,9 @@ public  class Customer {
 	
     private static final Logger LOGGER = Logger.getLogger(Customer.class.getName());
 	private static final String FILENAME = "Customers.txt";
+	private static final String PRODUCTS_FILENAME = "Products.txt";
+	private static final String COMPLETE = "complete";
+	
 	private static String  id;
 	private static  String name;
 	private static  String phone;
@@ -48,7 +51,6 @@ public  class Customer {
 	//private String items;
 	private static int ferquently;
 	private static ArrayList <Product> product = new ArrayList <Product>() ;
-	private static final String FILENAMEInv = "invoice.pdf";
 	private static boolean b;
 	
 	
@@ -244,7 +246,7 @@ public static void setName(String name2) {
 	name =name2;
 	
 }
-public  void setPayedMoney(double d) {
+public static void setPayedMoney(double d) {
 	payed_money = d;
 }
 
@@ -334,23 +336,8 @@ public static void set_customer_service_done( ) {
 
 
 
-public  static void set_customer_service_Notdone() {
+//public  static void set_customer_service_Notdone() {
 	
-	//customer_service_done = false;
-
-	
-}
-/*
-public void setitems(String items) {
-	this.items =items;
-	
-}
-public String get_items()
-{
-	return items;
-	
-}
-*/
 
 
 public static  void set_email(String email2) {
@@ -402,13 +389,6 @@ public static double getDbts() {
 }
 
 
-/*
-public void setPayementType(String key) {
-
-    payementType = key;
-	
-}
-*/
 
 public static void AddCustomer(String filename) {
     try {
@@ -514,7 +494,7 @@ public static boolean checkCustomerCredentials(String filename, String email, St
 }
 
 public static String findNameByEmail(String email) {
-    String fileName = "Customers.txt";
+    String fileName = FILENAME;
     String line = "";
     String name = "";
     try {
@@ -538,7 +518,7 @@ public static String findNameByEmail(String email) {
 
 
 public static String findIdByEmail(String email) {
-    String fileName = "Customers.txt";
+    String fileName = FILENAME;
     String line = "";
     String id = null; // Initialize the id variable to null
     try {
@@ -559,128 +539,165 @@ public static String findIdByEmail(String email) {
     return id;
 }
 
-
 public static String getRowByCustomerEmail(String email) {
-	    String row = null;
-	    try {
-	        File inputFile = new File(FILENAME);
-	        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+    String row = null;
+    try {
+        File inputFile = new File(FILENAME);
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 
-	        reader.readLine();
+        reader.readLine();
 
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            String emailM = line.split("\t")[5];
-	            if (emailM.equals(email)) {
-	                row = line;
-	                break;
-	            }
-	        }
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String emailM = line.split("\t")[5];
+            if (emailM.equals(email)) {
+                row = line;
+                break;
+            }
+        }
 
-	        // Close reader
-	        reader.close();
+        // Close reader
+        reader.close();
 
-	    } catch (IOException e) {
-	        LOGGER.log(java.util.logging.Level.SEVERE, "Error: " + e.getMessage(), e);
-	    }
+        if (row == null) {
+            LOGGER.warning("No order found with email " + email);
+            return null;
+        }
 
-	    if (row == null) {
-	        LOGGER.warning("No order found with email " + email);
-	        return null;
-	        
-	    }
+    } catch (IOException e) {
+        LOGGER.log(java.util.logging.Level.SEVERE, "Error: " + e.getMessage(), e);
+    }
 
-	    return row;
-	}
+    return row;
+}
 
+    
 public static void generateInvoice(String customerEmail) {
     try {
-        // Create a new document
-    	LocalDate today = LocalDate.now();
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    	String dateStr = today.format(formatter);
-    	String customerInformation = Customer.getRowByCustomerEmail(customerEmail);
-    	String [] Customers = customerInformation.split("\t");
-    	File productFile = new File("Products.txt");
+
+        LocalDate today = LocalDate.now();
+        String dateStr = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        String customerInformation = Customer.getRowByCustomerEmail(customerEmail);
+        if (customerInformation == null) {
+            return;
+        }
+        String[] customerTokens = customerInformation.split("\t");
+
+        File productFile = new File(PRODUCTS_FILENAME);
         BufferedReader productReader = new BufferedReader(new FileReader(productFile));
-        XWPFDocument document = new XWPFDocument();
-    
-        // Add customer information
-        XWPFParagraph customerInfo = document.createParagraph();
-    
-        XWPFRun customerInfoRun = customerInfo.createRun();
-        customerInfoRun.setText("Customer Information");
-        customerInfoRun.addCarriageReturn();
-        customerInfoRun.setText("Name: " + Customers[1]);
-        customerInfoRun.addCarriageReturn();
-        customerInfoRun.setText("Email: " + Customers[5]);
-        customerInfoRun.addCarriageReturn();
-        customerInfoRun.setText("Delivery Address: " + Customers[3]+" - " + Customers[4]);
-        customerInfoRun.addCarriageReturn();
-        customerInfoRun.setText("Delivery Date: " + dateStr);
-        customerInfoRun.addCarriageReturn();
-        customerInfoRun.addCarriageReturn();
 
-        // Add items to be cleaned
-        XWPFParagraph itemsToCleanPara = document.createParagraph();
-        XWPFRun itemsToCleanRun = itemsToCleanPara.createRun();
-        itemsToCleanRun.setText("Items to be Cleaned");
-        itemsToCleanRun.addCarriageReturn();
-
+        List<String[]> products = new ArrayList<>();
         String productLine;
         while ((productLine = productReader.readLine()) != null) {
             String[] productTokens = productLine.split("\t");
-
-            // Check if the current product ID matches the customer's product ID
-            if (productTokens[1].equals(Customers[0])) {
-            	
-            	 itemsToCleanRun.setText("- Id number" + productTokens[0]);
-                 itemsToCleanRun.addCarriageReturn();
-                 itemsToCleanRun.setText("- Category" + productTokens[2]);
-                 itemsToCleanRun.addCarriageReturn();
-                 itemsToCleanRun.setText("- Color" + productTokens[3]);
-                 itemsToCleanRun.addCarriageReturn();
-                 itemsToCleanRun.setText("- Dimention" + productTokens[4]);
-                 itemsToCleanRun.addCarriageReturn();
-                 itemsToCleanRun.setText("- Quantity" + productTokens[5]);
-                 itemsToCleanRun.addCarriageReturn();
-                 itemsToCleanRun.setText("- Picture" + productTokens[6]);
-                 itemsToCleanRun.addCarriageReturn();
-                 
-                 if(Double.parseDouble(productTokens[7]) >400.0  && Integer.parseInt(Customers[7]) >10)
-                 {
-                	 double discount = 0.1 * Double.parseDouble(productTokens[7]);
-                	 double calc = Double.parseDouble(productTokens[7]) - discount;
-                	 productTokens[7] = Double.toString(calc);
-                	 itemsToCleanRun.setText("You get 10% discount!");
-                     itemsToCleanRun.addCarriageReturn();
-                 }
-                 
-                 itemsToCleanRun.setText("- Price" + productTokens[7]);
-                 itemsToCleanRun.addCarriageReturn();
-                 
+            if (productTokens.length >= 10 && productTokens[9].equalsIgnoreCase(COMPLETE)
+                    && productTokens[1].equals(customerTokens[0])) {
+                products.add(productTokens);
             }
         }
-        // Close the customers reader
         productReader.close();
 
-        // Save the document
-        String fileName = "Invoice_" + new Date(0).getTime() + ".docx";
-        FileOutputStream outputStream = new FileOutputStream(fileName);
-        document.write(outputStream);
-        outputStream.close();
+        // Check if there are any products with state "complete"
+        if (products.isEmpty()) {
+            LOGGER.info("No products with state \"complete\" found for customer with email " + customerEmail);
+            return;
+        }
+
+        // Add customer information
+        FileWriter fileWriter = new FileWriter("Invoice_" + customerEmail + "_" + new Date(0).getTime() + ".txt");
+        fileWriter.write("Customer Information\n");
+        fileWriter.write("Customer Id: " + customerTokens[0] + "\n");
+        fileWriter.write("Name: " + customerTokens[1] + "\n");
+        fileWriter.write("Email: " + customerTokens[5] + "\n");
+        fileWriter.write("Delivery Address: " + customerTokens[3] + " - " + customerTokens[4] + "\n");
+        fileWriter.write("Delivery Date: " + dateStr + "\n\n");
+
+        // Add items to be cleaned
+        fileWriter.write("Items to be Cleaned\n");
+        for (String[] productTokens : products) {
+            fileWriter.write("- Order number: " + productTokens[0] + "\n");
+            fileWriter.write("- Category: " + productTokens[2] + "\n");
+            fileWriter.write("- Matiral: " + productTokens[3] + "\n");
+            fileWriter.write("- Color: " + productTokens[4] + "\n");
+            fileWriter.write("- Dimension: " + productTokens[5] + "\n");
+            fileWriter.write("- Quantity: " + productTokens[7] + "\n");
+            fileWriter.write("- Picture: " + productTokens[8] + "\n");
+
+            if (Double.parseDouble(productTokens[7]) > 400.0 && Integer.parseInt(customerTokens[7]) > 10) {
+                double discount = 0.1 * Double.parseDouble(productTokens[7]);
+                double calc = Double.parseDouble(productTokens[7]) - discount;
+                productTokens[7] = Double.toString(calc);
+                fileWriter.write("You get 10% discount!\n");
+            }
+
+            fileWriter.write("- Price: " + productTokens[11] + "\n\n");
+        }
+
+        fileWriter.close();
 
         LOGGER.info("Invoice generated successfully.");
-
     } catch (IOException e) {
         LOGGER.log(java.util.logging.Level.SEVERE, "Error generating invoice: " + e.getMessage(), e);
     }
 }
 
-    
 
+
+
+
+public static void getStatistics() {
+    double totalDelivered = 0;
+    double totalCash = 0;
+    double totalPaid = 0;
+    double totalDebts = 0;
+
+    try {
+        BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILENAME));
+        String header = reader.readLine(); // read and discard the header line
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] data = line.split("\t");
+
+            // Check if the order is delivered
+            if (data[9].equalsIgnoreCase(COMPLETE)) {
+                double price = Double.parseDouble(data[11]);
+                double quantity = Double.parseDouble(data[7]);
+                
+
+                // Add to the appropriate totals
+                totalDelivered += quantity;
+                if (data[6].equalsIgnoreCase("Cash")) {
+                    totalCash += price;
+                } 
+                    totalDebts += 0;
+                    if (data[6].equalsIgnoreCase("Cash") || data[6].equalsIgnoreCase("Credit card")  ) {
+                        totalPaid += price;
+                    
+                }
+            }
+        }
+        reader.close();
+
+        // Write the totals to the statistics file
+        PrintWriter writer = new PrintWriter(new FileWriter("statistics.txt"));
+        writer.println("Total Delivered: " + totalDelivered);
+        writer.println("Total Cash: " + totalCash);
+        writer.println("Total Paid: " + totalPaid);
+        writer.println("Total Debts: " + totalDebts);
+        writer.close();
+        LOGGER.info("This is your statistics");
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
 }
 
+
+
+        
+}
 
 
 

@@ -126,51 +126,26 @@ public class Test {
 	}
 
 	public static boolean checkPassword(String password) {
-		if(password.length() < 30)
-		{
-			char[] chars = password.toCharArray();
-			for(char c : chars)
-			{
-				if(Character.isDigit(c)) 
-				{
-					flag = true;
-					break;
-				}
-				else
-					flag = false;
-				
-			}
-			
-			for(char c : chars)
-			{
-				if(Character.isLowerCase(c)) 
-				{
-					flag = true;
-					break;
-				}
-				else
-					flag = false;
-				
-			}
-			for(char c : chars)
-			{
-				if(Character.isUpperCase(c)) 
-				{
-					flag = true;
-					break;
-				}
-				else
-					flag = false;
-				
-			}
-			
-		}
-		else flag = false;
-
-		
-		
-		return flag;
+	    if (password.length() >= 30) {
+	        return false;
+	    }
+	    
+	    boolean hasDigit = false;
+	    boolean hasLowerCase = false;
+	    boolean hasUpperCase = false;
+	    for (char c : password.toCharArray()) {
+	        if (Character.isDigit(c)) {
+	            hasDigit = true;
+	        } else if (Character.isLowerCase(c)) {
+	            hasLowerCase = true;
+	        } else if (Character.isUpperCase(c)) {
+	            hasUpperCase = true;
+	        }
+	    }
+	    
+	    return hasDigit && hasLowerCase && hasUpperCase;
 	}
+
 
 	public static boolean checkLog(String key, ArrayList<String> keyArray, int i) {
 
@@ -358,18 +333,14 @@ public class Test {
 	}
 
 	public static boolean checkPicture(String pic) {
-
-		    String extension = pic.substring(pic.lastIndexOf(".") + 1).toLowerCase();
-		    if(!pic.isEmpty()) {
-		    	
-		    if(extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png") || extension.equals("gif") || extension.equals("bmp"))
-		    return true;
-		    
-
-		}
-	    	return false;
-
+	    if(pic.isEmpty()) {
+	        return false;
+	    }
+	    
+	    String extension = pic.substring(pic.lastIndexOf(".") + 1).toLowerCase();
+	    return extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png") || extension.equals("gif") || extension.equals("bmp");
 	}
+
 
 	public static boolean checkDimention(String dimention) {
 

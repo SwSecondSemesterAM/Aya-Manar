@@ -4,9 +4,9 @@ Feature: logIn
     
  
 #| name    |  phone       | address   |       email           | id   | password |state|
- | Aya     |  09376  | A120      |abtammam2020@gmail.com |12345 | 1AsO45   |false|
+ | Aya     |  09376       | A120      |abtammam2020@gmail.com |12345 | 1AsO45   |false|
  | yasmeen |  0388673923  | B230      |yasmin@gmail.com       |54322 | 12342Aa  |false|
- | manar   |  8876209378  | C340      |manar2019@gmail.com    |92010 |Ffffff123 |false |
+ | manar   |  8876209378  | C340      |manar2019@gmail.com    |92010 |Ffffff123 |false|
      
   
   
