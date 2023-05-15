@@ -1,45 +1,14 @@
 package MyPackage;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.System.Logger.Level;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 import java.util.Scanner;
-import java.util.Set;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 public class testAll {
 
 
 	private static String Name , phone , address , city , email , password ;
-	//private static int Id;
-	private static double CoverQ;
-	private static double totalCover =0.0;
-	private static double CarpetQ;
-	private static double totalCarpet =0.0;
-	private static double total;
-	//private static String address;
-	//private static String city;
-	private static int i =0 ;
-	private static double discount;
-	private static double TotalDelivered;
-	private static double TotalCash;
-	private static double TotalPaid;
-	private static double TotalDebts;
 	private static String id;
-	private static int indexId;
 	static int press;
 	private static boolean flag;
 	private static int CustomerProductnom ;
@@ -416,56 +385,44 @@ public class testAll {
 		     System.out.println("Enter Password");
 		     
 		     String Password = scanner.nextLine();
-		     if(User.equals(AdminName) && Password.equals(AdminPass))
-		     {
-				 System.out.println("Welcome to your page");
-				 System.out.println("Press 1 to generate customized reports about business.");
-				 System.out.println("Press 2 to Generate statistics");
-				 System.out.println("press 3 to Distribute the orders");
-				 System.out.println("press 4 to  send invoice to customer when its complete");
+		     if (User.equals(AdminName) && Password.equals(AdminPass)) {
+		    	    System.out.println("Welcome to your page");
+		    	    System.out.println("Press 1 to generate customized reports about business.");
+		    	    System.out.println("Press 2 to Generate statistics");
+		    	    System.out.println("press 3 to Distribute the orders");
+		    	    System.out.println("press 4 to send invoice to customer when it's complete");
 
-				 
-				press = scanner2.nextInt();
-				if(press == 4)//invoice
-				{
-					System.out.println("Customer email to send invoice:  ");
-				     email = scanner.nextLine();
-					Customer.generateInvoice(email);
-					
-				}
-				
-				
-				else if(press == 1)//report
-				{
-					Admin.generateReport();
-					
-				}
-				
-				else if(press == 2)//statistics
-				{
-					Customer.getStatistics();
-				}
+		    	    int press = scanner.nextInt();
 
+		    	    switch (press) {
+		    	        case 1:
+		    	            Admin.generateReport();
+		    	            break;
+		    	        case 2:
+		    	            Customer.getStatistics();
+		    	            break;
+		    	        case 3:
+		    	            Admin.distributeOrdersToWorkers();
+		    	            break;
+		    	        case 4:
+		    	            System.out.println("Customer email to send invoice: ");
+		    	            String email = scanner.next();
+		    	            Customer.generateInvoice(email);
+		    	            break;
+		    	        default:
+		    	            LOGGER.warning("Invalid input: " + press);
+		    	            break;
+		    	    }
+		    	} else {
+		    	    LOGGER.warning("Wrong User name or Password, try again...");
+		    	}
 
-				else if (press == 3)//distribute
-				{
-					Admin.distributeOrdersToWorkers();
-					
-				}
-				 
-
-		     }
-		     
-		     else
-				 System.out.println("Wrong User name or Password, try again...");
-
-			
-		}
 		
 		
 		
 		
 }
+	}
 }
 	
 

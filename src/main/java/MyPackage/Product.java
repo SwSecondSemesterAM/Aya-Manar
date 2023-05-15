@@ -7,10 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Scanner;
-//record full information for the product (e.g. name, picture, description[dimension,
-//material) , is required special treatment, etc..)
 import java.util.logging.Logger;
 
 
@@ -21,15 +18,12 @@ public class Product {
 	private static String CID;
 	private static String Category;
 	private static  String Picture;
-	private static  String description;
 	private static boolean Isrequiredspecialtreatment ;
 	private static int quantity;
 	private static double Price;
 	private static String status;
-	private static String management;
 	private static  String color;
 	private static String payementType;
-	private static String size;
 	private static boolean b;	
 	private static String Dimensions;
 	private static String Material;
@@ -54,15 +48,7 @@ public class Product {
 		Picture = pic;
 		
 	}
-	public static void setdescription(String dis) {
-		description = dis;
-		
-	}
-	public static String getdescription() {
 
-   return description;
-		
-	}
 	public static void setIsrequiredspecialtreatment(boolean t) {
 		
 		Isrequiredspecialtreatment = t;
@@ -86,11 +72,7 @@ public class Product {
 		return Category;
 	}
 
-	public static String getSize() {
 
-		return size;
-		
-	}
 
 	public static int getQuantity() {
 
@@ -338,11 +320,7 @@ public class Product {
 	public static void trackStatus(String customerId) {
 	    boolean b = false;
 	    Scanner s = new Scanner(System.in);
-<<<<<<< HEAD
 	    try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCT_FILENAME))) {
-=======
-	    try (BufferedReader reader = new BufferedReader(new FileReader("Products.txt"))) {
->>>>>>> a21e64f4bc7b4b3e1512831b23216c932dda7384
 	        StringBuilder sb = new StringBuilder();
 	        String header = reader.readLine(); // read and discard the header line
 	        sb.append(header).append("\n");
