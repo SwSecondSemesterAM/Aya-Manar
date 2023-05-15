@@ -2,11 +2,15 @@ package MyPackage;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class Admin {
@@ -23,15 +27,7 @@ public class Admin {
 	private static final String FILENAME2 = "Workers.txt";
 
 	
-	public void addnewProduct(String c , String n , String pic , String d , String Is)
-	{
-	p = new Product();
-	p.setCategory(c);
-	p.setPicture(pic);
-	p.setdescription(d);
-	p.setIsrequiredspecialtreatment(false);
 	
-	}
 
 	public static void set_email(String email2) {
 		
@@ -125,7 +121,7 @@ public class Admin {
 		workerData[4] = productData[0];
 		workerData[5] = "false";
 		productData[9] = "in treatment";
-		LOGGER.log(java.util.logging.Level.INFO, "Order " + productData[0] + " assigned to Worker " + workerData[1]);
+		LOGGER.log(java.util.logging.Level.INFO, "Order {0} assigned to Worker {1}", new Object[] {productData[0], workerData[1]});
 		return true;
 		}
 		}
@@ -152,11 +148,10 @@ public class Admin {
 	        // Read Products.txt
 
 	        BufferedReader reader = new BufferedReader(new FileReader(FILENAME));
-	       // BufferedReader reader = new BufferedReader(new FileReader("Products.txt"));
-	        String header = reader.readLine(); // read and discard the header line
+	        String header = reader.readLine(); 
 
 	        // Print column headers for the relevant columns
-	        String productHeaders = String.format("%-10s%-15s%-15s%-10s\n", "Order No.", "Customer ID", "Category", "Rating");
+	        String productHeaders = String.format("%-10s%-15s%-15s%-10s%n", "Order No.", "Customer ID", "Category", "Rating");
 
 	        FileWriter writer = new FileWriter("Report.txt");
 	        writer.write(productHeaders);
@@ -165,21 +160,19 @@ public class Admin {
 	        while ((line = reader.readLine()) != null) {
 	            String[] data = line.split("\t");
 
-	            // Check if the rating is greater than 0 and write the relevant columns to the report file
 	            if (Double.parseDouble(data[12]) > 0) {
-	                String reportLine = String.format("%-10s%-15s%-15s%-10s\n", data[0], data[1], data[2], data[12]);
+	                String reportLine = String.format("%-10s%-15s%-15s%-10s%n", data[0], data[1], data[2], data[12]);
 	                writer.write(reportLine);
 	            }
+
 	        }
 	        reader.close();
 	        
-	        // Read Workers.txt
 	        reader = new BufferedReader(new FileReader(FILENAME2));
 	        reader = new BufferedReader(new FileReader("Workers.txt"));
-	        header = reader.readLine(); // read and discard the header line
+	        header = reader.readLine();
 	        
-	        // Print column headers for worker info
-	        String workerHeaders = String.format("ID\tName\tPhone\tEmail\tOrdersNom\tavailable\n");
+	        String workerHeaders = String.format("ID\tName\tPhone\tEmail\tOrdersNom\tavailable%n");
 	        writer.write("\n" + workerHeaders);
 
 	        while ((line = reader.readLine()) != null) {

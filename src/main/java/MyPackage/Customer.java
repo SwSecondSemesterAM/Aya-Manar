@@ -41,8 +41,6 @@ public  class Customer {
 	private static String password;
 	private static boolean CustomerLogedIn = false;
 	private static boolean Is_request_the_service = false;
-	//private boolean customer_service_done = false;
-	//private String items;
 	private static int ferquently;
 	private static ArrayList <Product> product = new ArrayList <Product>() ;
 	private static boolean b;
@@ -50,30 +48,9 @@ public  class Customer {
 	
 	
 	
-	public Customer (String id , String name , String phone , String address ,String City, String email , double Money, double debts , String pass, boolean log , boolean req  , int freq , ArrayList <Product>p  )
-	{
-		
-		this.id = id;
-		this.name = name;
-		this.phone = phone;
-		this.address = address;
-		this.email = email;
-		this.payed_money = Money;
-		this.password = pass;
-		this.CustomerLogedIn = log;
-		this.Is_request_the_service = req;
-		//this.customer_service_done = done;
-		//this.items = items;
-		//this.payementType = payType;
-		this.ferquently  = freq;
-		this.product = p;
-		this.City = City;
-		this.debts =debts;
-		
-		
-	}
+	
 
-	public Customer(String id2, String name2, String phone2, String address2, String city2, String email2,
+	private Customer(String id2, String name2, String phone2, String address2, String city2, String email2,
 			String password2) {
 
 		id =id2;
@@ -141,7 +118,7 @@ public  class Customer {
 		Customer.set_id(ID);
 		Customer.setfrequently(0);
 		
-        LOGGER.log(java.util.logging.Level.SEVERE, "Welcome to our application!"+Customer.get_name());
+		LOGGER.log(java.util.logging.Level.SEVERE,  "Welcome to our application, " + Customer.get_name() + "!");
 
 	}
 	
@@ -166,19 +143,15 @@ public  class Customer {
 	        File inputFile = new File(filename);
 	        File tempFile = new File("temp.txt");
 
-	        // Create readers and writers for the input and output files
 	        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 	        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
-	        // Read and skip the header line
 	        String headerLine = reader.readLine();
 	        String expectedHeader = "id\tName\tphone\tAddress\tCity\temail\tPassword\tfreq"; // modify this to match your actual header
 
 
-	        // Write the header line to the output file
 	        writer.write(headerLine + System.lineSeparator());
 
-	        // Read the remaining lines and write them to the output file
 	        String line;
 	        while ((line = reader.readLine()) != null) {
 	            int id = Integer.parseInt(line.split("\t")[0]);
@@ -189,34 +162,23 @@ public  class Customer {
 	            }
 	        }
 
-	        // Close readers and writers
 	        reader.close();
 	        writer.close();
 
-	        // Delete the input file and rename the temporary file to the input file name
 	        if (!inputFile.delete()) {
-	            LOGGER.log(java.util.logging.Level.WARNING, "Could not delete input file: " + inputFile.getName());
+	            LOGGER.log(java.util.logging.Level.WARNING, String.format("Could not delete input file: %s", inputFile.getName()));
 	            return;
 	        }
 	        if (!tempFile.renameTo(inputFile)) {
-	            LOGGER.log(java.util.logging.Level.WARNING, "Could not rename temp file: " + tempFile.getName());
-	        }
+	            LOGGER.log(java.util.logging.Level.WARNING, String.format("Could not rename temp file: %s", tempFile.getName()));	        }
 
 	    } catch (IOException e) {
-	        LOGGER.log(java.util.logging.Level.SEVERE, "Error: " + e.getMessage(), e);
-	    }
+	        LOGGER.log(java.util.logging.Level.SEVERE, String.format("Error: %s", e.getMessage()), e);
+	        }
 	}
 
 	
 	
-	
-	public static double  discount(double m) {
-		
-		
-		System.out.println("You get a discount!");
-		return 0.1*m;
-		
-	}
 
 	public static void set_id(String iD2) {
 		
@@ -322,15 +284,6 @@ public static void set_not_request_the_service() {
 
 
 
-public static void set_customer_service_done( ) {
-
-	//customer_service_done = true;
-	
-}
-
-
-
-//public  static void set_customer_service_Notdone() {
 	
 
 
@@ -410,7 +363,6 @@ public static void updateCustomer(String id, String name, String address, String
 	        long pos = 0;
 	        boolean found = false;
 
-	        // skip the header line
            raf.readLine();
 	       pos = raf.getFilePointer();
 
@@ -430,13 +382,12 @@ public static void updateCustomer(String id, String name, String address, String
 	            sb.append(id).append("\t").append(name).append("\t").append(phone).append("\t").append(address).append("\t").append(city).append("\t").append(email).append("\t").append(password).append("\t").append(freq).append("\n");
 
 	            raf.writeBytes(sb.toString());
-	            LOGGER.info("Customer with ID " + id + " updated successfully.");
+	            LOGGER.info(String.format("Customer with ID %s updated successfully.", id));
 	        } else {
-	        	 LOGGER.warning("Customer with ID " + id + " not found.");
+	        	LOGGER.warning(String.format("Customer with ID %s not found.", id));
 	        }
 	    } catch (IOException e) {
-	    	LOGGER.warning("Error updating customer: " + e.getMessage());
-	    }
+	    	LOGGER.log(java.util.logging.Level.WARNING, "Error updating customer: %s", e.getMessage());	    }
 
 }
 
@@ -455,7 +406,7 @@ public static List<Customer> findByName(String fileName, String name) {
             if (customerName.equalsIgnoreCase(name)) {
                 Customer customer = new Customer(fields[0], customerName, fields[2], fields[3], fields[4], fields[5], fields[6]);
                 matchingCustomers.add(customer);
-		        System.out.println(customer.get_id());
+		        LOGGER.info(customer.get_id());
 
             }
         }
@@ -482,7 +433,7 @@ public static boolean checkCustomerCredentials(String filename, String email, St
             }
         }
     } catch (IOException e) {
-    	LOGGER.warning("Error reading file " + filename + ": " + e.getMessage());
+    	LOGGER.warning(String.format("Error reading file %s: %s", filename, e.getMessage()));
     }
     return false;
 }
@@ -504,7 +455,7 @@ public static String findNameByEmail(String email) {
         }
         reader.close();
     } catch (IOException e) {
-    	LOGGER.warning("An error occurred: " + e.getMessage());
+    	LOGGER.warning(String.format("An error occurred: %s", e.getMessage()));
     }
     return name;
 }
@@ -528,7 +479,7 @@ public static String findIdByEmail(String email) {
         }
         reader.close();
     } catch (IOException e) {
-        LOGGER.warning("An error occurred: " + e.getMessage());
+    	LOGGER.warning(String.format("An error occurred: %s", e.getMessage()));
     }
     return id;
 }
@@ -554,7 +505,7 @@ public static String getRowByCustomerEmail(String email) {
         reader.close();
 
         if (row == null) {
-            LOGGER.warning("No order found with email " + email);
+        	LOGGER.warning(String.format("No order found with email %s", email));
             return null;
         }
 
@@ -588,39 +539,42 @@ products.add(productTokens);
 productReader.close();
 // Check if there are any products with state "complete"
 if (products.isEmpty()) {
-LOGGER.info("No products with state \"complete\" found for customer with email " + customerEmail);
+LOGGER.info(String.format("No products with state \"complete\" found for customer with email %s", customerEmail));
 return;
 }
 // Add customer information
-FileWriter fileWriter = new FileWriter("Invoice_" + customerEmail + "_" + new Date(0).getTime() + ".txt");
-fileWriter.write("Customer Information\n");
-fileWriter.write("Customer Id: " + customerTokens[0] + "\n");
-fileWriter.write("Name: " + customerTokens[1] + "\n");
-fileWriter.write("Email: " + customerTokens[5] + "\n");
-fileWriter.write("Delivery Address: " + customerTokens[3] + " - " + customerTokens[4] + "\n");
-fileWriter.write("Delivery Date: " + dateStr + "\n\n");
+String fileName = String.format("Invoice_%s_%d.txt", customerEmail, new Date(0).getTime());
+FileWriter fileWriter = new FileWriter(fileName);
+fileWriter.write("Customer Information%n");
+fileWriter.write(String.format("Customer Id: %s%n", customerTokens[0]));
+fileWriter.write(String.format("Name: %s%n", customerTokens[1]));
+fileWriter.write(String.format("Email: %s%n", customerTokens[5]));
+fileWriter.write(String.format("Delivery Address: %s - %s%n", customerTokens[3], customerTokens[4]));
+fileWriter.write(String.format("Delivery Date: %s%n%n", dateStr));
 // Add items to be cleaned
-fileWriter.write("Items to be Cleaned\n");
+fileWriter.write("Items to be Cleaned%n");
 for (String[] productTokens : products) {
-fileWriter.write("- Order number: " + productTokens[0] + "\n");
-fileWriter.write("- Category: " + productTokens[2] + "\n");
-fileWriter.write("- Matiral: " + productTokens[3] + "\n");
-fileWriter.write("- Color: " + productTokens[4] + "\n");
-fileWriter.write("- Dimension: " + productTokens[5] + "\n");
-fileWriter.write("- Quantity: " + productTokens[7] + "\n");
-fileWriter.write("- Picture: " + productTokens[8] + "\n");
+	fileWriter.write(String.format("- Order number: %s%n", productTokens[0]));
+	fileWriter.write(String.format("- Category: %s%n", productTokens[2]));
+	fileWriter.write(String.format("- Material: %s%n", productTokens[3]));
+	fileWriter.write(String.format("- Color: %s%n", productTokens[4]));
+	fileWriter.write(String.format("- Dimension: %s%n", productTokens[5]));
+	fileWriter.write(String.format("- Quantity: %s%n", productTokens[7]));
+	fileWriter.write(String.format("- Picture: %s%n", productTokens[8]));
+
+
 if (Double.parseDouble(productTokens[7]) > 400.0 && Integer.parseInt(customerTokens[7]) > 10) {
 double discount = 0.1 * Double.parseDouble(productTokens[7]);
 double calc = Double.parseDouble(productTokens[7]) - discount;
 productTokens[7] = Double.toString(calc);
-fileWriter.write("You get 10% discount!\n");
+fileWriter.write("You get 10% discount!%n");
 }
-fileWriter.write("- Price: " + productTokens[11] + "\n\n");
+fileWriter.write(String.format("- Price: %s%n%n", productTokens[11]));
 }
 fileWriter.close();
 LOGGER.info("Invoice generated successfully.");
 } catch (IOException e) {
-LOGGER.log(java.util.logging.Level.SEVERE, "Error generating invoice: " + e.getMessage(), e);
+	LOGGER.log(java.util.logging.Level.SEVERE, String.format("Error generating invoice: %s", e.getMessage()), e);
 }
 }
 
@@ -640,31 +594,31 @@ public static void getStatistics() {
 
             // Check if the order is delivered
             if (data[9].equalsIgnoreCase(COMPLETE)) {
-            if (data[9].equalsIgnoreCase("complete")) {
-                double price = Double.parseDouble(data[11]);
-                double quantity = Double.parseDouble(data[7]);
-                
+            	if (data[9].equalsIgnoreCase("complete")) {
+            	    double price = Double.parseDouble(data[11]);
+            	    double quantity = Double.parseDouble(data[7]);
 
-                // Add to the appropriate totals
-                totalDelivered += quantity;
-                if (data[6].equalsIgnoreCase("Cash")) {
-                    totalCash += price;
-                } 
-                    totalDebts += 0;
-                    if (data[6].equalsIgnoreCase("Cash") || data[6].equalsIgnoreCase("Credit card")  ) {
-                        totalPaid += price;
-                    
-                }
+            	    // Add to the appropriate totals
+            	    totalDelivered += quantity;
+            	    if (data[6].equalsIgnoreCase("Cash")) {
+            	        totalCash += price;
+            	    } else {
+            	        totalDebts += 0;
+            	        if (data[6].equalsIgnoreCase("Cash") || data[6].equalsIgnoreCase("Credit card")) {
+            	            totalPaid += price;
+            	        }
+            	    }
+            	}
             }
-        }
         reader.close();
 
         // Write the totals to the statistics file
         PrintWriter writer = new PrintWriter(new FileWriter("statistics.txt"));
-        writer.println("Total Delivered: " + totalDelivered);
-        writer.println("Total Cash: " + totalCash);
-        writer.println("Total Paid: " + totalPaid);
-        writer.println("Total Debts: " + totalDebts);
+        writer.printf("Total Delivered: %d%n", totalDelivered);
+        writer.printf("Total Cash: %d%n", totalCash);
+        writer.printf("Total Paid: %d%n", totalPaid);
+        writer.printf("Total Debts: %d%n", totalDebts);
+
         writer.close();
         LOGGER.info("This is your statistics");
 

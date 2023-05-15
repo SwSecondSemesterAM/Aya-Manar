@@ -61,7 +61,7 @@ public class ProductInfo {
 	        case "description":
 	            // flag = Test.checkdescription(string2);
 	            if (flag) {
-	            	Product.setdescription(string2);
+	            	//Product.setdescription(string2);
 	            } else {
 	                assertEquals(false, flag);
 	                LOGGER.warning(s + WRONG );
@@ -116,7 +116,7 @@ public class ProductInfo {
 	    case "description":
 	        s = string;
 	        if (flag) {
-	            Product.setdescription(string2);
+	       //     Product.setdescription(string2);
 	        } else {
 	            assertEquals(false, flag);
 	            LOGGER.warning(s + WRONG);
