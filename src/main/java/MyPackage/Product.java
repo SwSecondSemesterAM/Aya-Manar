@@ -346,7 +346,7 @@ public class Product {
 	            LOGGER.warning("You don't have any orders to track");
 	        } else {
 	            // Write the updated lines to the file
-	            FileWriter writer = new FileWriter("Products.txt");
+	            FileWriter writer = new FileWriter(PRODUCT_FILENAME);
 	            writer.write(sb.toString());
 	            writer.close();
 	            LOGGER.info("Ratings updated successfully.");

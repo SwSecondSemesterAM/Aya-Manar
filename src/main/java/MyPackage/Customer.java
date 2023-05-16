@@ -584,48 +584,43 @@ public static void getStatistics() {
     double totalPaid = 0;
     double totalDebts = 0;
 
-    try {
-        BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILENAME));
-        String header = reader.readLine(); // read and discard the header line
+    try (BufferedReader reader = new BufferedReader(new FileReader(PRODUCTS_FILENAME));
+         PrintWriter writer = new PrintWriter(new FileWriter("statistics.txt"))) {
 
+        String header = reader.readLine(); // read and discard the header line
         String line;
         while ((line = reader.readLine()) != null) {
             String[] data = line.split("\t");
 
-            // Check if the order is delivered
             if (data[9].equalsIgnoreCase(COMPLETE)) {
-            	if (data[9].equalsIgnoreCase("complete")) {
-            	    double price = Double.parseDouble(data[11]);
-            	    double quantity = Double.parseDouble(data[7]);
+                double price = Double.parseDouble(data[11]);
+                double quantity = Double.parseDouble(data[7]);
+                totalDelivered += quantity;
 
-            	    // Add to the appropriate totals
-            	    totalDelivered += quantity;
-            	    if (data[6].equalsIgnoreCase("Cash")) {
-            	        totalCash += price;
-            	    } else {
-            	        totalDebts += 0;
-            	        if (data[6].equalsIgnoreCase("Cash") || data[6].equalsIgnoreCase("Credit card")) {
-            	            totalPaid += price;
-            	        }
-            	    }
-            	}
+                if (data[6].equalsIgnoreCase("Cash")) {
+                    totalCash += price;
+                } else if (data[6].equalsIgnoreCase("Credit card")) {
+                    totalPaid += price;
+                } else {
+                    totalDebts += 0;
+                }
             }
-        reader.close();
+        }
 
-        // Write the totals to the statistics file
-        PrintWriter writer = new PrintWriter(new FileWriter("statistics.txt"));
-        writer.printf("Total Delivered: %d%n", totalDelivered);
-        writer.printf("Total Cash: %d%n", totalCash);
-        writer.printf("Total Paid: %d%n", totalPaid);
-        writer.printf("Total Debts: %d%n", totalDebts);
+        writer.printf("Total Delivered: %.2f%n", totalDelivered);
+        writer.printf("Total Cash: %.2f%n", totalCash);
+        writer.printf("Total Paid: %.2f%n", totalPaid);
+        writer.printf("Total Debts: %.2f%n", totalDebts);
 
-        writer.close();
         LOGGER.info("This is your statistics");
 
-        }} catch (IOException e) {
+    } catch (IOException e) {
         e.printStackTrace();
     }
 }
+
+
+
 }
 
 

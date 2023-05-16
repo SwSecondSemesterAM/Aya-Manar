@@ -28,7 +28,6 @@ Scenario Outline: Generate Invoice with Delivery Information and Items to Clean
 When  <customer> has requested cleaning services
 And he has provided a list of items to be cleaned
 And he has provided delivery information
-And the price for the cleaning services has been agreed upon
 Then an invoice should be generated
  Examples:
  |customer|

@@ -141,13 +141,7 @@ public class generateInvoiceFeature {
 		
 	}
 
-	@When("the price for the cleaning services has been agreed upon")
-	public void the_price_for_the_cleaning_services_has_been_agreed_upon() {
 
-
-		
-		
-	}
 
 	@Then("an invoice should be generated")
 	public void an_invoice_should_be_generated() {

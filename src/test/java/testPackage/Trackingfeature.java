@@ -19,6 +19,7 @@ public class Trackingfeature {
 	@When("he check the status of his order")
 	public void he_check_the_status_of_his_order() {
 
+		Status = "waiting";
 
 		
 	}

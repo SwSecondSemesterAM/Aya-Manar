@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
-import org.apache.commons.mail.EmailException;
 
 import MyPackage.Test;
 import io.cucumber.java.en.Given;
@@ -88,17 +87,11 @@ public class NotifyFeature {
 		
 	}
 
-	@Then("the system sends an email notification to the customer")
-	public void the_system_sends_an_email_notification_to_the_customer() {
-		
-		
 
-		
-	}
 
-	@Then("the user should receive an email with subject {string}")
-	public void the_user_should_receive_an_email_with_subject(String string) {
-
+	@Then("the user should receive an email from system with subject {string} and  the email body should contain {string}")
+	public void the_user_should_receive_an_email_from_system_with_subject_and_the_email_body_should_contain(String string, String string2) {
+	   
 		try {
 			Test.sendEmail("abtammam2020@gmail.com", "Your order is complete", "Dear customer, your order is complete!");
 			
@@ -109,10 +102,4 @@ public class NotifyFeature {
 		
 	}
 
-	@Then("the email body should contain {string}")
-	public void the_email_body_should_contain(String string) {
-
-
-		
-	}
 }

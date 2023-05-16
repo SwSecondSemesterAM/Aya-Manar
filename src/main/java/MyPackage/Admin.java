@@ -23,8 +23,8 @@ public class Admin {
 	private static String Address;
 	private static String Name;
     private static final Logger LOGGER = Logger.getLogger(Admin.class.getName());
-	private static final String FILENAME = "Products.txt";
-	private static final String FILENAME2 = "Workers.txt";
+	private static final String PRODUCTFILE = "Products.txt";
+	private static final String WORKERFILE = "Workers.txt";
 
 	
 	
@@ -74,8 +74,8 @@ public class Admin {
 	
 	public static void distributeOrdersToWorkers() {
 		try {
-		List<String[]> products = readDataFile(FILENAME);
-		List<String[]> workers = readDataFile(FILENAME2);
+		List<String[]> products = readDataFile(PRODUCTFILE);
+		List<String[]> workers = readDataFile(WORKERFILE);
 		List<String[]> availableWorkers = getAvailableWorkers(workers);
 		if (availableWorkers.size() == 0) {
 		LOGGER.log(java.util.logging.Level.WARNING, "No available workers to assign orders.");
@@ -86,8 +86,8 @@ public class Admin {
 		LOGGER.log(java.util.logging.Level.WARNING, "No orders available to assign to workers.");
 		return;
 		}
-		writeDataFile("Products.txt", products);
-		writeDataFile("Workers.txt", workers);
+		writeDataFile(PRODUCTFILE, products);
+		writeDataFile(WORKERFILE , workers);
 		} catch (IOException e) {
 		LOGGER.log(java.util.logging.Level.SEVERE, "An error occurred while");
 		}
@@ -147,7 +147,7 @@ public class Admin {
 	    try {
 	        // Read Products.txt
 
-	        BufferedReader reader = new BufferedReader(new FileReader(FILENAME));
+	        BufferedReader reader = new BufferedReader(new FileReader(PRODUCTFILE));
 	        String header = reader.readLine(); 
 
 	        // Print column headers for the relevant columns
@@ -168,7 +168,6 @@ public class Admin {
 	        }
 	        reader.close();
 	        
-	        reader = new BufferedReader(new FileReader(FILENAME2));
 	        reader = new BufferedReader(new FileReader("Workers.txt"));
 	        header = reader.readLine();
 	        

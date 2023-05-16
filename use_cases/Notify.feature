@@ -22,13 +22,9 @@ And these orders names, their IDs are contained in the system
 Scenario Outline: send a notify to the customer
   Given a customer with this <email>
   And   an order with this <ID> is marked as complete
-  Then  the system sends an email notification to the customer
-  And  the user should receive an email with subject "Your order is complete"
-  And   the email body should contain "Dear customer, your order is complete!"
+  Then the user should receive an email from system with subject "Your order is complete" and  the email body should contain "Dear customer, your order is complete!"
       
  Examples: 
  
-       |       email                    |    ID     |
-   #    |  "yasmeen@gmail.com"           |    2      |
+        |       email                    |    ID     |
         |  "abtammam2020@gmail.com"      |    1      |
-   #    |  "abtammam2020@gmail.com"      |    3      | 
