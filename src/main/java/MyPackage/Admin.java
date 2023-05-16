@@ -26,19 +26,7 @@ public class Admin {
 		
 	}
 
-	public static void setId(Integer id2) {
-	}
-
-	public static void setPhone(Integer phone) {
-	}
-
-	public static void setAddress(String address2) {
-
-	}
-
-	public static void setName(String name1) {
-
-	}
+	
 
 	public static void setPassword(String password2) {
 
