@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.logging.Logger;
 
-import MyPackage.Product;
-import MyPackage.Test;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import myPackage.Product;
+import myPackage.Test;
 
 public class ProductInfo {
 	
@@ -41,7 +41,7 @@ public class ProductInfo {
 	    switch (string.toLowerCase()) {
 	        case "category":
 	        case "name":
-	            flag = Test.checkName(string2);
+	            flag = Test.checkCategory(string2);
 	            if (flag) {
 	                Product.setCategory(string2);
 	            } else {
@@ -68,9 +68,9 @@ public class ProductInfo {
 	            } 
 	            break;
 	        case "isrequiredspecialtreatment":
-	            flag = Test.checkIsrequiredspecialtreatment(flag);
+	            flag = Test.checkIsRequiredSpecialTreatment(flag);
 	            if (flag) {
-	            	Product.setIsrequiredspecialtreatment(flag);
+	            	Product.setIsrequiredSpecialTreatment(flag);
 	            } else {
 	                assertEquals(false, flag);
 	                LOGGER.warning(s + WRONG );
@@ -85,7 +85,7 @@ public class ProductInfo {
 	    switch(string.toLowerCase()) {
 	    case "category":
 	        s = string;
-	        flag = Test.checkName(string2);
+	        flag = Test.checkCategory(string2);
 	        if (flag) {
 	            Product.setCategory(string2);
 	        } else {
@@ -95,7 +95,7 @@ public class ProductInfo {
 	        break;
 	    case "name":
 	        s = string;
-	        flag = Test.checkName(string2);
+	        flag = Test.checkCategory(string2);
 	        if (flag) {
 	            Product.setCategory(string2);
 	        } else {
@@ -124,9 +124,9 @@ public class ProductInfo {
 	        break;
 	    case "isrequiredspecialtreatment":
 	        s = string;
-	        flag = Test.checkIsrequiredspecialtreatment(flag);
+	        flag = Test.checkIsRequiredSpecialTreatment(flag);
 	        if (flag) {
-	            Product.setIsrequiredspecialtreatment(flag);
+	            Product.setIsrequiredSpecialTreatment(flag);
 	        } else {
 	            assertEquals(false, flag);
 	            LOGGER.warning(s + WRONG);

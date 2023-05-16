@@ -1,13 +1,7 @@
 package testPackage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import MyPackage.Customer;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

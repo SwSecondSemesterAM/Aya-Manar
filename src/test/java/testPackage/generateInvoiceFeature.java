@@ -2,9 +2,7 @@ package testPackage;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.event.ItemEvent;
 import java.util.ArrayList;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -80,7 +78,6 @@ public class generateInvoiceFeature {
 
 	@When("he has provided a list of items to be cleaned")
 	public void he_has_provided_a_list_of_items_to_be_cleaned() {
-		boolean n = false;
 		int t = 0;
 		int r = -1;
 		for(String s : idForOrder)

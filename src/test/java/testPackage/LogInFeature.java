@@ -1,36 +1,33 @@
 package testPackage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.net.PasswordAuthentication;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import MyPackage.Admin;
-import MyPackage.Customer;
-import MyPackage.Test;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import myPackage.Customer;
+import myPackage.Test;
 
-public class LogIn_feature {
+public class LogInFeature {
 
-	Customer c;
-	public  String keyName = "yasmeen", valuePass ="5466";
+	public  static String keyName = "yasmeen";
+	public  static String valuePass ="5466";
     boolean flag =true;
     int i ;
-    public ArrayList<String> name , phone, address , email , id , password ,state;
+    public static ArrayList<String> name;
+	public static ArrayList<String> phone;
+	public static ArrayList<String> address;
+	public static ArrayList<String> email;
+	public static ArrayList<String> id;
+	public static ArrayList<String> password;
+	public static ArrayList<String> state;
 
 
 	
 	@Given("these customers with there information contained in the system")
 	public void these_customers_with_there_information_contained_in_the_system(io.cucumber.datatable.DataTable dataTable) {
-		//name , phone, address , email , id , password ,state;
 		
 		name = new ArrayList<String>();
 		phone = new ArrayList<String>();
@@ -70,57 +67,34 @@ public class LogIn_feature {
 	@When("he fill {string} with {string}")
 	public void he_fill_with(String string, String string2) {
 
-		if(string.equalsIgnoreCase("email"))
-		{
+		if (string.equalsIgnoreCase("email")) {
 			keyName = string2;
-		    i = Test.checkindex(keyName , email);
-			if(i == -1)
-				{
-				flag = false; 
-
-				}
-			else 
-			{
-				flag  = true;
+			i = Test.checkIndex(keyName, email);
+			if (i == -1) {
+			flag = false;
+			} else {
+			flag = true;
 			}
-			
-			
-		}
-		
-	    if(string.equalsIgnoreCase("password"))
-		{
-			if(flag == false)
-			{
-				assertEquals(false, flag);
-				System.out.println("Wrong! Try again");
-
 			}
-			else
-			{	
-			valuePass =  string2;
-			flag = Test.checkLog(valuePass , password, i);
-			
-			
-			}
+		if (string.equalsIgnoreCase("password")) {
+		    if (flag == false) {
+		        assertEquals(false, flag);
+		        System.out.println("Wrong! Try again");
+		    } else {
+		        valuePass = string2;
+		        flag = Test.checkLog(valuePass, password, i);
+		    }
 		}
-	
-		if (flag == true)
-		{
-			c.setName(keyName);
-			c.setPassword(valuePass);
-			state.set(i, "true");
-			c.setCustomerLogedIn();
-		}
-		else
-		{
-			
-		 assertEquals(false, flag);
-			
-		}
-		
-		
 
-	
+		if (flag == true) {
+		    Customer.setName(keyName);
+		    Customer.setPassword(valuePass);
+		    state.set(i, "true");
+		    Customer.setCustomerLogedIn();
+		} else {
+		    assertEquals(false, flag);
+		}
+
 
 		
 		
@@ -135,7 +109,7 @@ public void his_profile_will_open() {
 	
 
 	
-	assertTrue(c.getCustomerloged());
+	assertTrue(Customer.getCustomerloged());
 	System.out.print("Welcome!");
 
 

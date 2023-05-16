@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
-
-import MyPackage.Test;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import myPackage.Test;
 
 public class NotifyFeature {
 

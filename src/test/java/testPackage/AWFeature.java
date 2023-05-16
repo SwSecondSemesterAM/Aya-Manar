@@ -2,7 +2,6 @@ package testPackage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -55,8 +54,6 @@ public class AWFeature {
     }
     private static class Worker {
         private String name;
-        private Orderr assignedOrder;
-
         public Worker(String name) {
             this.name = name;
         }
@@ -66,29 +63,11 @@ public class AWFeature {
         }
 
         public void assignOrder(Orderr order) {
-            assignedOrder = order;
-        }
-
-        public Orderr getAssignedOrder() {
-            return assignedOrder;
         }
     }
 
     private static class Orderr {
-        private String id;
-        private String customerName;
-
         public Orderr(String id, String customerName) {
-            this.id = id;
-            this.customerName = customerName;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getCustomerName() {
-            return customerName;
         }
     }
 }
